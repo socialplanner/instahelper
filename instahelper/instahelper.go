@@ -3,41 +3,49 @@ package instahelper
 import (
 	"os"
 
-	"github.com/op/go-logging"
+	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Log is the main logger for instahelper
-var Log = logging.MustGetLogger("instahelper")
+var Log = logrus.New()
 
-// Example format string. Everything except the message has a custom color
-// which is dependent on the log level. Many fields have a custom output
-// formatting too, eg. the time returns the hour down to the milli second.
-var format = logging.MustStringFormatter(
-	`%{color}%{time:15:04:05.000} %{shortfunc} ▶ %{level:.4s} %{id:03x}%{color:reset} %{message}`,
-)
+// SetLoggingLevel Sets the logging level of the app Debug, Error, Fatal, Info, Panic, Warn
+func SetLoggingLevel(level string) {
+	level = strings.ToLower(level)
+	switch level {
+	case "debug":
+		Log.Level = logrus.DebugLevel
 
-// Password is just an example type implementing the Redactor interface. Any
-// time this is logged, the Redacted() function will be called.
-type Password string
+	case "error":
+		Log.Level = logrus.ErrorLevel
 
-func (p Password) Redacted() interface{} {
-	return logging.Redact(string(p))
+	case "fatal":
+		Log.Level = logrus.FatalLevel
+
+	case "info":
+		Log.Level = logrus.InfoLevel
+
+	case "panic":
+		Log.Level = logrus.PanicLevel
+
+	case "warn":
+		Log.Level = logrus.WarnLevel
+
+	default:
+		Log.Info("Invalid logging level given. Logging level set to default of Warn.")
+	}
 }
 
 func init() {
-	// For demo purposes, create two backend for os.Stderr.
-	backend1 := logging.NewLogBackend(os.Stderr, "", 0)
-	backend2 := logging.NewLogBackend(os.Stderr, "", 0)
+	// Log as JSON instead of the default ASCII formatter.
+	// log.SetFormatter(&log.JSONFormatter{})
 
-	// For messages written to backend2 we want to add some additional
-	// information to the output, including the used log level and the name of
-	// the function.
-	backend2Formatter := logging.NewBackendFormatter(backend2, format)
+	// Output to stdout instead of the default stderr
+	// Can be any io.Writer, see below for File example
+	logrus.SetOutput(os.Stdout)
 
-	// Only errors and more severe messages should be sent to backend1
-	backend1Leveled := logging.AddModuleLevel(backend1)
-	backend1Leveled.SetLevel(logging.ERROR, "")
-
-	// Set the backends to be used.
-	logging.SetBackend(backend1Leveled, backend2Formatter)
+	// Set log severity
+	Log.Level = logrus.InfoLevel
 }

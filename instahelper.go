@@ -7,30 +7,53 @@ import (
 
 	"time"
 
+	"fmt"
+
 	app "github.com/socialplanner/instahelper/instahelper"
 )
+
+const logLevel = "debug"
+const port = "8080"
 
 func main() {
 
 	log := app.Log
 
+	app.SetLoggingLevel(logLevel)
+
 	// index
 	http.HandleFunc("/", app.Index)
+	log.Debug("Set index handler.")
 
 	// favicon.ico
 	http.HandleFunc("/favicon.ico", app.Favicon)
+	log.Debug("Set favicon.ico handler")
 
-	log.Info("Running on port 8080. Visit http://localhost:8080")
+	ip, err := GetIP()
 
-	go func() {
-		time.Sleep(1 * time.Second)
-		err := open.Run("http://localhost:8080")
+	if err != nil {
+		log.Info("Couldn't fetch your IP. To visit instahelper on other devices within your network visit [DEVICEIP]:8080.")
+		log.Info("If this is running on a VPS, visit [DOMAINNAME]:8080")
+		ip = "localhost"
+	}
 
-		if err != nil {
-			log.Error(err)
-		}
-	}()
-	err := http.ListenAndServe(":8080", nil)
+	url := fmt.Sprintf("http://%s:%s", ip, port)
+
+	log.Infof("Running on port %s. Visit %s", port, url)
+
+	// Opens the url in the default web browser
+	if logLevel != "debug" {
+		go func() {
+			time.Sleep(1 * time.Second)
+			err = open.Run(url)
+
+			if err != nil {
+				log.Error(err)
+			}
+		}()
+	}
+
+	err = http.ListenAndServe(":"+port, nil)
 
 	if err != nil {
 		log.Fatal(err)
