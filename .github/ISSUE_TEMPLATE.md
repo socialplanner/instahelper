@@ -12,8 +12,6 @@
 
 # Suggestion
 
-### 1. What are you trying to do?
+### 1. What is the feature you are looking for?
 
 ### 2. Are there any existing services which do this? (Provide links.)
-
-### 3. Can this be exploited to make Instagram a spammier/harmful environment?
