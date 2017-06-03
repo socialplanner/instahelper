@@ -1,6 +1,8 @@
 # Instahelper - PreAlpha
 Self Hosted Web Based Instagram Automation Tool
+
 [![GoDoc](https://godoc.org/github.com/socialplanner/instahelper?status.svg)](https://godoc.org/github.com/socialplanner/instahelper) [![Version](https://img.shields.io/badge/version-0.0.1-green.svg)](#development-status)
+
 This project is in it's early stages and shouldn't be considered ready for use until reaching `Alpha` status. 
 
 * [Installation](#installation)
