@@ -2,6 +2,4 @@
 
 ### 2. Have you written tests for the project?
 
-### 3. Does it employ any "hacky" workarounds/dependencies?
-
-### 4. Is it backwards compatible?
+### 3. Have you linted your code?
