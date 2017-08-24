@@ -17,8 +17,7 @@ This project is in it's early stages and shouldn't be considered ready for use u
 ## Installation
 1. Travel to [Github Releases](https://github.com/socialplanner/instahelper/releases) and download the latest release for your operating system.
 2. Navigate to the downloaded zip and unzip it
-3. Open a terminal and type in the filename and press enter
-[How to Open a Terminal?](https://github.com/socialplanner/instahelper/wiki/How-to-Open-a-Terminal%3F)
+3. Double click the respective run file. run.sh/run.command/run.bat
 
 ## Project Goals
 * Simple
@@ -32,11 +31,13 @@ This project is in it's early stages and shouldn't be considered ready for use u
 
 * Open Source
     * 100% open source
-    * Licensed under GNU v3 insuring all projects to be open source
+    * Licensed under GNU v3 ensuring all projects to be open source
     * No end of life, can be modified and customized to users need
+
 * Secure
     * Self Hosted
     * No need for 3rd party interactions
+    * Direct connection to Instagram
 
 * Free
     * No hidden charges
