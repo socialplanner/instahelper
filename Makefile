@@ -34,7 +34,7 @@ build: version deps
 debug: assets
 	go run main.go
 
-test: deps
+test: deps assets 
 	go test -v ./app/...
 
 deps:
@@ -48,7 +48,9 @@ endif
 	go run app/update/gen_version.go $(v)
 
 assets-release:
+	go get -u github.com/jteeuwen/go-bindata/...
 	go-bindata -nometadata -pkg="assets" -ignore=\\.DS_Store -prefix "assets" -o app/assets/assets.go assets/...
 
 assets:
+	go get -u github.com/jteeuwen/go-bindata/...
 	go-bindata -debug -nometadata -pkg="assets" -ignore=\\.DS_Store -prefix "assets" -o app/assets/assets.go assets/...
