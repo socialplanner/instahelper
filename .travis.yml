@@ -1,27 +1,20 @@
 language: go
-
 go:
-  - 1.9
-  - 1.8.x
-  - master
-  - tip
-
+- 1.9
+- 1.8.x
+- master
+- tip
 install: true
-
 matrix:
   allow_failures:
-    - go: master
-    - go: tip
-
+  - go: master
+  - go: tip
 notifications:
   email: false
 script: make test
-
-
 before_deploy:
-  - make build v=nightly  
-  - go run deploy.go
-
+- make build v=nightly
+- go run deploy.go
 deploy:
   target_commitish: master
   provider: releases
@@ -35,14 +28,16 @@ deploy:
   on:
     branch: master
     repo: socialplanner/instahelper
-    # Build only on tagged commits
     tags: false
     go: 1.9
   name: Nightly
   body: Nightly release built on the latest commit
   prerelease: true
   draft: false
-
 cache:
   directories:
-    - vendor
+  - vendor
+
+env:
+  global:
+    secure: aVi6QR58c9qqomWGG92/0Px6OfA8l3wBDJ9VYl2IMoY0QmjVO42o1K5RznBfhWw5csFY7jkMjqxWb53f/Ovg3vJPiJxqnLTcGgZOk8AAC4zC1S1nO9RKnf4Wwze2ctvt5AUKLXQCyBf0Qmgd2OFNIeglNKBo65Npqqx1ys335jLZHJtaXn+2GTguqDXfjKjZI/hXYpgOkmVMpQZyw5Na+BvCvpMBcsT8QbUiB1Xhlj1KXXEXdTij4h1rRj6JqS3Wjkdjxn2ykOMk0bluGMdQxlUtvvuHP5FJbeYW+W6uUYcMkiMfsLlmzl0GtIdTKokhYkZ0+m+JygTYlYapVv0lO61yYCvSOOeCiOlvUSdSU7IMnIaLe1NOcEU38/99r3bTQRlKuvzqJMddpjyGNGbrs8xDvSMhOrxyN8bNk+wuUx9oAVIA02luX/UP+Yh9Xh2b/VBUnARAd24M4eqQTqNnjPdKGOGqSRcFBYH1cBmsjndj6U9RIzhgUmhvBr9Q3kCciw+cOMmiRDvbQzd7SamELlYEuy6DFyqCZOhx2KJUFPIh9VerSmOgH5jjBipJVOx/OK65shfWNx3yYUR1GSWFu7wxoUVgvUZ620lnIHT79c6fztIo4RWo5SOpWjOEHizSFTtXGuXH0BYXXMEmWtbSp/pH8MoGPSRj7TKPFid2ypE=
