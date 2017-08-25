@@ -24,7 +24,7 @@ func main() {
 
 	for _, r := range releases {
 		if r.Version == "nightly" {
-			err := delete(r)
+			err := delete(r.ID)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
