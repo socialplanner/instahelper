@@ -10,13 +10,12 @@ debug:
 	go build -o test
 	test
 
+test: deps
+	go test -v ./app/...
+
 deps:
 	go get -u github.com/golang/dep/cmd/dep
 	dep ensure
-
-test:
-	deps
-	go test -v ./app/...
 
 version:
 	go run app/update/gen_version.go $(v)
