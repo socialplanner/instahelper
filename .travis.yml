@@ -34,7 +34,6 @@ deploy:
     # Build on any commit
     tags: false
     go: 1.9
-  options:
-    name: Nightly
-    body: Nightly release built on the latest commit
-    prerelease: true
+  name: Nightly
+  body: Nightly release built on the latest commit
+  prerelease: true
