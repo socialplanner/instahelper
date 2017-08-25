@@ -17,8 +17,8 @@ script: make test
 
 
 before_deploy:
-  make build v=nightly  
-  go run deploy.go
+  - make build v=nightly  
+  - go run deploy.go
 
 deploy:
   provider: releases
