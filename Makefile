@@ -1,3 +1,5 @@
+.PHONY: assets test
+
 GOARCHES = 386 amd64
 GOOSES = linux darwin windows
 
