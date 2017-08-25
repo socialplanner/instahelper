@@ -16,7 +16,7 @@ before_deploy:
 - make build v=nightly
 - go run nightly.go
 deploy:
-  target_commitish: master
+  target_commitish: $TRAVIS_COMMIT
   provider: releases
   api_key:
     secure: r8RatJXfzVq3tug6Rn5o3TAfpXBPhKsTToGrQJotyAkH46Btx3I+EafqFFwRxvej9mASFIRpRKLQMDXelv3jgDGutNISk/4Ug84JSGcPe0GWyw22Ic5RA2AjjhPzHQszDuGnoAgwlgruBKdIpa3Efr4rpGUFI3VoSlmSdfQqIOPK2jXPYZ6ewAGemCJZQkFZjF35rLRwCrd2EycMg1elnj9I+JXpG4ghDF7reFv/dZaN4JwG4RTps6SO4KZYvxo4hY/EGjFF1HqtUzImJah9dL0pJ9H37IjwAhXYKd+ucN7yYm5QPPjr0rXuD8iIqtwTYKO7A+Wg9vxCh7rfLivKJKP3l0A6i0+FXB1pXL2q4At6/TXQwIBgVIy7A50YkLt167MuRFHyuS12Xh4RKzLurLKdcp+Mn/ve38RkZlZOe4VDEfg+KPaInRqdZbC/fR7NCoUpRB5Dijt93fWs0wbr03gK50RvsKd/uMsQ1dIzvXGawvS8T4m5CSBi6TQ3G8r00DfWwWtqPniy6iZoZR9bryEFy7O1RkbDbPsp1FbZg+FrkBQnE8vdhFAuNd9Bd8MdTnMrcDVLwAtAdGLcOwEB1kjbsZmHFI9Un5HPoMSoPMsG4NJlXXb4ngKHvQ0//92wUOc/cj9Sm1ilj79K9qZX2BU48S9FLD57HE5TqyH0hzw=
@@ -31,7 +31,7 @@ deploy:
     tags: false
     go: 1.9
   name: Nightly
-  body: Nightly release built on the latest commit
+  body: Nightly release built on the latest commit to the repo.
   prerelease: true
   draft: false
 cache:
