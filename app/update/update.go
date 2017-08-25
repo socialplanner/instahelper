@@ -126,11 +126,15 @@ func pickAsset(assets []Asset) *Asset {
 
 		goos, goarch := info[2], info[3]
 
+		if goos == "macos" {
+			goos = "darwin"
+		}
+
 		if goos == runtime.GOOS {
 			switch goarch {
 			case "32", "arm":
 				goarch = "386"
-			case "64":
+			case "64", "arm64":
 				goarch = "amd64"
 			}
 

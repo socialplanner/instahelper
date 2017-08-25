@@ -18,3 +18,7 @@ vendor/
 
 # Name of binary used when testing
 test
+
+dist/
+
+app/assets/assets.go

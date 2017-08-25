@@ -16,6 +16,7 @@ go get github.com/socialplanner/instahelper
 cd $GOPATH/src/github.com/instahelper
 git remote add upstream https://github.com/socialplanner/instahelper
 git fetch upstream
+make assets
 ```
 
 ## Making Changes
