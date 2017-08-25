@@ -4,7 +4,6 @@ package update
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -12,6 +11,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/coreos/go-semver/semver"
 	l "github.com/socialplanner/instahelper/app/log"
@@ -21,7 +21,9 @@ const (
 	baseURL = "https://api.github.com/repos/socialplanner/instahelper/"
 )
 
-var log = l.Log
+var (
+	log = l.Log
+)
 
 // Update replaces the binary runnning this command with a newer one fetched from github releases
 func Update(version string) (*Asset, error) {
@@ -72,6 +74,11 @@ func ListReleases() ([]Release, error) {
 
 	defer resp.Body.Close()
 
+	if resp.StatusCode == http.StatusTooManyRequests {
+		time.Sleep(3 * time.Second)
+		return ListReleases()
+	}
+
 	b, _ := ioutil.ReadAll(resp.Body)
 
 	var releases []Release
@@ -79,7 +86,6 @@ func ListReleases() ([]Release, error) {
 	err = json.Unmarshal(b, &releases)
 
 	if err != nil {
-		fmt.Println("DEBUG", string(b))
 		return nil, err
 	}
 
