@@ -23,7 +23,7 @@ deploy:
   file_glob: true
   file: dist/*
   skip_cleanup: true
-  tag_name: master
+  tag_name: nightly
   overwrite: true
   on:
     branch: master
@@ -31,7 +31,7 @@ deploy:
     tags: false
     go: 1.9
   name: Nightly
-  body: Nightly release built on the latest commit to the repo.
+  body: Nightly release built on the latest commit to the repo. Commit/Branch listed below may not be accurate.
   prerelease: true
   draft: false
 cache:
