@@ -25,8 +25,16 @@ var (
 	log = l.Log
 )
 
-// Update replaces the binary runnning this command with a newer one fetched from github releases
-func Update(version string) (*Asset, error) {
+// ToLatest replaces the binary runnning this command with the latest binary available on github releases
+// If version is an empty string, it will fetch and replace the binary no matter what.
+// Else: it will only replace it if the version is greater than the current version
+func ToLatest(version string) (*Asset, error) {
+	var currentVer *semver.Version
+
+	if version == "" {
+		currentVer, _ = semver.NewVersion("0.0.1")
+	}
+
 	releases, err := ListReleases()
 
 	if err != nil {
@@ -34,7 +42,7 @@ func Update(version string) (*Asset, error) {
 		return nil, err
 	}
 
-	currentVer, err := semver.NewVersion(version)
+	currentVer, err = semver.NewVersion(version)
 
 	if err != nil {
 		log.Error(err)
@@ -59,6 +67,49 @@ func Update(version string) (*Asset, error) {
 				return asset, err
 			}
 
+		}
+	}
+	return nil, errors.New("No available download")
+}
+
+// Update will replace the current binary with the binary with version ver2.
+// Will return error if ver2 not found
+// Update is allowed to update to a lower version
+func Update(ver string) (*Asset, error) {
+	semver1, err := semver.NewVersion(strings.Replace(
+		ver,
+		"v",
+		"",
+		-1,
+	))
+
+	if err != nil {
+		return nil, err
+	}
+
+	releases, err := ListReleases()
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, r := range releases {
+		semver2, err := semver.NewVersion(strings.Replace(
+			r.Version,
+			"v",
+			"",
+			-1,
+		))
+
+		if err != nil {
+			continue
+		}
+
+		if semver1.Equal(*semver2) {
+			if asset := pickAsset(r.Assets); asset != nil {
+				err := download(asset.DownloadURL)
+				return asset, err
+			}
 		}
 	}
 	return nil, errors.New("No available download")

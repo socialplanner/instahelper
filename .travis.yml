@@ -31,7 +31,7 @@ deploy:
     tags: false
     go: 1.9
   name: Nightly
-  body: Nightly release built on the latest commit to the repo. Commit/Branch listed below may not be accurate.
+  body: Nightly release built on the latest commit to the repo.
   prerelease: true
   draft: false
 cache:
