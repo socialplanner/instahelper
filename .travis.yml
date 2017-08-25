@@ -5,18 +5,33 @@ go:
   - 1.9
   - master
 
-# Skip the install step. Don't `go get` dependencies. Only build with the
-# code in vendor/
 install: true
 
 matrix:
-  # It's ok if our code fails on unstable development versions of Go.
   allow_failures:
     - go: tip
 
-# Don't email me the results of the test runs.
 notifications:
   email: false
+script: make test
 
-script:
-  make test
+
+before_deploy:
+  make build v=nightly  
+
+deploy:
+  provider: releases
+  api_key:
+    secure: aGah92vx1rJ+yD31DAWagL4A/21g9cFI/TSeYoWzwOv6rMrDM8HQUzfXuyGoszsWP3DUZ2ZdvmEMbxzlqP1k1RcMF8FUbU03hfpPF+hH8hHBFkWX7xK329T+4qJNul2uPrI+BUxhcHYABq15PemViEEcf/phPnPGOUxLQLef/yXpVap1brCJRyNDvdfGkDtiQ24tMOauSTMdFIklkHaMZI1651v5+DpXS+b74Su3DMD74nT1rdfqmFaj5uLShGLIOkTAyGARPVE1auJvHAxX7QbyYJ0Z6MLylqkkOMShm7mrw8uFOZOpW+MkHC4fbOXAi5bHMKY/ytTg3ITICN88xr1tieO4xqUVLUuV9hPpEpfVBVdcRifcfU36QWOdQNvI7kgTD7Vmh+SlJKc+VvXyk9irDjLA+RyJeIK9saZ1HmMG2CatE5yBg7txge9mfj0IXSAzWad7aIlDN4q6lmyNa6jACbd+TehOq31I94ZNBKr8E9iiYRDxViKv976HIlHXxEjgzz2BzBX7onEzRBpwhW7p4pGdv+acQ83RYr7JwazeZId8gXeK5kdamANSrgayi1Re89ys21QFv3JnqhiMNZpKDbsWnhKBR0I5JKZbSmCRyzp/4dT8jGHOyCMdOHtRFhBGOmNIRt3yX709lWWsffYVhCaeHzd0yKd3RkYBvqo=
+  file_glob: true
+  file: dist/*
+  skip_cleanup: true
+  tag_name: nightly
+  on:
+    branch: master
+    repo: socialplanner/instahelper
+    tags: true
+  options:
+    name: Nightly
+    body: Nightly release built on the latest commit
+    prerelease: true
