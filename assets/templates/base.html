@@ -1,27 +1,26 @@
-{{define "base"}}
 <!doctype html>
 <html lang="en">
 
 <head>
 	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="../assets/img/favicon.ico" />
-	<link rel="icon" type="image/png" href="../assets/img/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico" />
+	<link rel="icon" type="image/png" href="/img/favicon.ico" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Instahelper - {{template "title" .}}</title>
+	<title>Instahelper - {{.Title}}</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
 
 
 	<!-- Bootstrap core CSS     -->
-	<link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/css/bootstrap.min.css" rel="stylesheet" />
 
 	<!--  Material Dashboard CSS    -->
-	<link href="../assets/css/material-dashboard.css" rel="stylesheet" />
+	<link href="/css/material-dashboard.css" rel="stylesheet" />
 
 	<!--  CSS for Demo Purpose, don't include it in your project     -->
-	<!--  <link href="../assets/css/demo.css" rel="stylesheet" />    -->
+	<!--  <link href="/css/demo.css" rel="stylesheet" />    -->
 
 	<!--     Fonts and icons     -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -31,7 +30,7 @@
 <body>
 
 	<div class="wrapper">
-		<div class="sidebar" data-color="purple" data-image="../assets/img/sidebar.jpg">
+		<div class="sidebar" data-color="purple" data-image="/img/sidebar.jpg">
 
 			<!--
 		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
@@ -47,8 +46,8 @@
 
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					{{range .Templates}}
-					<li {{ if eq {{template "title" .}} {{.Name}} }}class="active" {{end}}>
+					{{range .Pages}}
+					<li {{if eq $.Title .Name}} class="active" {{end}}>
 						<a href={{.Link}}>
 	                        <i class="material-icons">{{.Icon}}</i>
 	                        <p>{{.Name}}</p>
@@ -69,7 +68,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">{{template "title" .}}</a>
+						<a class="navbar-brand" href="#">{{.Title}}</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -82,13 +81,13 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 										<i class="material-icons">notifications</i>
-										{{ if ne (len .Notifications) 0 }}
-										<span class="notification">(len .Notifications)</span>
+										{{ if notifications }}
+										<span class="notification">{{(len notifications)}}</span>
 										{{ end }}
 										<p class="hidden-lg hidden-md">Notifications</p>
 								  </a>
 								<ul class="dropdown-menu">
-									{{range .Notifications}}
+									{{range notifications}}
 									<li><a href={{.Link}}>{{.Text}}</a></li>
 									{{end}}
 								</ul>
@@ -116,9 +115,7 @@
 
 			<div class="content">
 				<div class="container-fluid">
-					<div class="row">
-						{{template "content" .}}
-					</div>
+					{{template "content" .}}
 				</div>
 			</div>
 			<footer class="footer">
@@ -150,25 +147,24 @@
 </body>
 
 <!--   Core JS Files   -->
-<script src="../assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
-<script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../assets/js/material.min.js" type="text/javascript"></script>
+<script src="/js/jquery-3.1.0.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/material.min.js" type="text/javascript"></script>
 
 <!--  Charts Plugin -->
-<script src="../assets/js/chartist.min.js"></script>
+<script src="/js/chartist.min.js"></script>
 
 <!--  Notifications Plugin    -->
-<script src="../assets/js/bootstrap-notify.js"></script>
+<script src="/js/bootstrap-notify.js"></script>
 
 <!--  Google Maps Plugin    -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
 <!-- Material Dashboard javascript methods -->
-<script src="../assets/js/material-dashboard.js"></script>
+<script src="/js/material-dashboard.js"></script>
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<!-- <script src="../assets/js/demo.js"></script>                       -->
+<!-- <script src="/js/demo.js"></script>                       -->
 
 
 </html>
-{{end}}

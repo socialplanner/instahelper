@@ -1,8 +1,8 @@
 # Instahelper - PreAlpha
 Self Hosted Web Based Instagram Automation Tool
 
-[![GoDoc](https://godoc.org/github.com/socialplanner/instahelper?status.svg)](https://godoc.org/github.com/socialplanner/instahelper) [![Version](https://img.shields.io/badge/version-0.0.1-green.svg)](#development-status)
-[![Build Status](https://travis-ci.org/socialplanner/instahelper.svg?branch=master)](https://travis-ci.org/socialplanner/instahelper) 
+[![GoDoc](https://godoc.org/github.com/socialplanner/instahelper?status.svg)](https://godoc.org/github.com/socialplanner/instahelper) [![Version](https://img.shields.io/badge/version-0.0.1-green.svg)](#development-status) 
+[![Travis](https://img.shields.io/travis/socialplanner/instahelper.svg?style=flat-square)](https://travis-ci.org/socialplanner/instahelper) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/socialplanner/instahelper)](https://goreportcard.com/report/github.com/socialplanner/instahelper)
 
 This project is in it's early stages and shouldn't be considered ready for use until reaching `Alpha` status. 
@@ -74,9 +74,9 @@ Please create a new [issue](https://github.com/socialplanner/instahelper/issues/
 We welcome all help/contributions to Instahelper. Just follow this guide first.
 [Setup and Contributing Guide](https://github.com/socialplanner/instahelper/blob/master/CONTRIBUTING.md)
 
-## Changelog
-All new and notable features to the master branch should be posted here.
-[Changelog](https://github.com/socialplanner/instahelper/blob/master/CHANGELOG.md)
+## Credits
+
+[Creative Tim](https://github.com/creativetimofficial/material-dashboard/)
 
 ## Development Status:
 ### PreAlpha

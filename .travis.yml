@@ -14,7 +14,7 @@ notifications:
 script: make test
 before_deploy:
 - make build v=nightly
-- go run deploy.go
+- go run nightly.go
 deploy:
   target_commitish: master
   provider: releases

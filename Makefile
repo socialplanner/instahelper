@@ -32,8 +32,7 @@ build: version deps
 # Deletes the original folders
 	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), rm -rf dist/instahelper-$(v)-$(os)-$(arch);))
 debug: assets
-	go build -o test
-	test
+	go run main.go
 
 test: deps
 	go test -v ./app/...
@@ -47,6 +46,9 @@ ifeq ($(v),)
 		$(error Set version with v={{VERSION}})
 endif
 	go run app/update/gen_version.go $(v)
+
+assets-release:
+	go-bindata -nometadata -pkg="assets" -ignore=\\.DS_Store -prefix "assets" -o app/assets/assets.go assets/...
 
 assets:
 	go-bindata -debug -nometadata -pkg="assets" -ignore=\\.DS_Store -prefix "assets" -o app/assets/assets.go assets/...

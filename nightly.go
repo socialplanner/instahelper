@@ -2,6 +2,8 @@
 
 package main
 
+// Used to autogenerate nightly builds on commit.
+
 import (
 	"fmt"
 	"io/ioutil"
