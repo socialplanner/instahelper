@@ -1,10 +1,10 @@
 package template
 
 var tmpls = []Page{
-	// Main Dashboard
-	Page{
-		Name: "Dashboard",
-		Link: "/",
-		Icon: "dashboard",
-	},
+        // Main Dashboard
+        {
+                Name: "Dashboard",
+                Link: "/",
+                Icon: "dashboard",
+        },
 }

@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	baseURL = "https://api.github.com/repos/zyedidia/micro/"
+	baseURL = "https://api.github.com/repos/socialplanner/instahelper/"
 )
 
 var log = l.Log
