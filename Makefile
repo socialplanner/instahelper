@@ -36,6 +36,7 @@ debug: assets
 	test
 
 test: deps
+	golint -set_exit_status ./... | grep -v assets.go
 	go test -v ./app/...
 
 deps:

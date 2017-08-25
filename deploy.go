@@ -57,7 +57,7 @@ func delete(releaseid int) error {
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != 204 {
 		b, _ := ioutil.ReadAll(resp.Body)
 		return fmt.Errorf("Expected 200 got %d. %s", resp.StatusCode, string(b))
 	}
