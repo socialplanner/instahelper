@@ -23,7 +23,9 @@ func main() {
 	out := fmt.Sprintf(tmpl, os.Args[1])
 
 	// Check if version is semver
-	semver.New(os.Args[1])
+	if os.Args[1] != "nightly" {
+		semver.New(os.Args[1])
+	}
 
 	err := ioutil.WriteFile(path, []byte(out), 0644)
 	if err != nil {
