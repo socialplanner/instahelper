@@ -24,7 +24,7 @@ func main() {
 
 	for _, r := range releases {
 		if r.Version == "nightly" {
-			err := delete(r.ID)
+			err := delete(r)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
@@ -35,6 +35,9 @@ func main() {
 
 // delete will delete the release based off of ID
 func delete(releaseid int) error {
+
+	fmt.Println("Deleting release with ID", releaseid)
+
 	key := os.Getenv("GITHUB_KEY")
 	req, _ := http.NewRequest(
 		"DELETE",
