@@ -47,12 +47,14 @@
 
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					<li class="active">
-						<a href="/dashboard">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
+					{{range .Templates}}
+					<li {{ if eq {{template "title" .}} {{.Name}} }}class="active" {{end}}>
+						<a href={{.Link}}>
+	                        <i class="material-icons">{{.Icon}}</i>
+	                        <p>{{.Name}}</p>
 	                    </a>
 					</li>
+					{{end}}
 				</ul>
 			</div>
 		</div>
@@ -67,12 +69,12 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Table List</a>
+						<a class="navbar-brand" href="#">{{template "title" .}}</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+								<a href="/" class="dropdown-toggle" data-toggle="dropdown">
 									<i class="material-icons">dashboard</i>
 									<p class="hidden-lg hidden-md">Dashboard</p>
 								</a>
@@ -80,15 +82,15 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 										<i class="material-icons">notifications</i>
-										<span class="notification">5</span>
+										{{ if ne (len .Notifications) 0 }}
+										<span class="notification">(len .Notifications)</span>
+										{{ end }}
 										<p class="hidden-lg hidden-md">Notifications</p>
 								  </a>
 								<ul class="dropdown-menu">
-									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
-									<li><a href="#">You're now friend with Andrew</a></li>
-									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
+									{{range .Notifications}}
+									<li><a href={{.Link}}>{{.Text}}</a></li>
+									{{end}}
 								</ul>
 							</li>
 							<li>
@@ -126,11 +128,20 @@
 							<li>
 								<a href="#">
 	                                Home
-	                            </a>
+								</a>
+								<a href="https://github.com/socialplanner/instahelper">
+									Github
+								</a>
 							</li>
 
 						</ul>
 					</nav>
+					<p class="copyright pull-right">
+						&copy;
+						<script>
+							document.write(new Date().getFullYear())
+						</script> <a href="https://twitter.com/spieswithin">Jay Nagpaul</a>, made with love
+					</p>
 				</div>
 			</footer>
 		</div>
@@ -156,7 +167,7 @@
 <script src="../assets/js/material-dashboard.js"></script>
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../assets/js/demo.js"></script>
+<!-- <script src="../assets/js/demo.js"></script>                       -->
 
 
 </html>

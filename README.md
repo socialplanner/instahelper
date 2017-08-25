@@ -21,9 +21,10 @@ This project is in it's early stages and shouldn't be considered ready for use u
 
 ## Project Goals
 * Simple
-    * Golang for cross platform, portable binaries
+    * Go for cross platform, portable binaries
     * Quickstart - **Download & Run** No Dependencies
     * Simple yet powerful web dashboard
+    * One step updates
 
 * Powerful
     * Plethora of [features](#Features) comparable to Massplanner and Followliker

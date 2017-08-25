@@ -1,0 +1,17 @@
+language: go
+
+go:
+  - 1.8.x
+  - 1.9.x
+  - master
+
+# Skip the install step. Don't `go get` dependencies. Only build with the
+# code in vendor/
+install: true
+
+# Don't email me the results of the test runs.
+notifications:
+  email: false
+
+script:
+  make test

@@ -15,3 +15,6 @@
 
 # Dep Vendor
 vendor/
+
+# Name of binary used when testing
+test
