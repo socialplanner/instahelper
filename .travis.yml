@@ -23,7 +23,7 @@ deploy:
   file_glob: true
   file: dist/*
   skip_cleanup: true
-  tag_name: nightly
+  tag_name: master
   overwrite: true
   on:
     branch: master
