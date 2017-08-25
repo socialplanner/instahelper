@@ -4,11 +4,13 @@ go:
   - 1.9
   - 1.8.x
   - master
+  - tip
 
 install: true
 
 matrix:
   allow_failures:
+    - go: master
     - go: tip
 
 notifications:
@@ -32,9 +34,10 @@ deploy:
   on:
     branch: master
     repo: socialplanner/instahelper
-    # Build on any commit
+    # Build only on tagged commits
     tags: false
     go: 1.9
   name: Nightly
   body: Nightly release built on the latest commit
   prerelease: true
+  draft: false

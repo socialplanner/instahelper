@@ -3,8 +3,8 @@
 package main
 
 import (
-	"io/ioutil"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -15,7 +15,6 @@ var client = &http.Client{}
 
 func main() {
 	// DELETE NIGHTLY BUILD IN PREPARATION FOR NIGHTLY FROM TRAVIS
-	key := os.Getenv("GITHUB_KEY")
 	releases, err := update.ListReleases()
 
 	for _, r := range releases {
@@ -31,14 +30,16 @@ func main() {
 
 // delete will delete the release based off of ID
 func delete(releaseid int) error {
+	key := os.Getenv("GITHUB_KEY")
 	req, _ := http.NewRequest(
-		"DELETE", 
+		"DELETE",
 		fmt.Sprintf(
 			"https://api.github.com/repos/socialplanner/instahelper/releases/%d",
 			releaseid),
-		nil
+		nil,
 	)
-	req.BasicAuth("jaynagpaul", GITHUB_KEY, true)
+
+	req.SetBasicAuth("jaynagpaul", key)
 
 	resp, err := client.Do(req)
 
@@ -49,6 +50,8 @@ func delete(releaseid int) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("Expected 200 got %d. %s", resp.StatusCode, ioutil.ReadAll(resp.Body))
+		b, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("Expected 200 got %d. %s", resp.StatusCode, string(b))
 	}
+	return nil
 }
