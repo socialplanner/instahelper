@@ -4,6 +4,7 @@ package update
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -78,6 +79,7 @@ func ListReleases() ([]Release, error) {
 	err = json.Unmarshal(b, &releases)
 
 	if err != nil {
+		fmt.Println("DEBUG", string(b))
 		return nil, err
 	}
 
