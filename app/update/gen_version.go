@@ -29,7 +29,8 @@ func main() {
 
 	err := ioutil.WriteFile(path, []byte(out), 0644)
 	if err != nil {
-		fmt.Errorf("", err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 }

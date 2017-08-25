@@ -13,26 +13,28 @@ import (
 	"strings"
 
 	"github.com/coreos/go-semver/semver"
-	. "github.com/socialplanner/instahelper/app/log"
+	l "github.com/socialplanner/instahelper/app/log"
 )
 
 const (
 	baseURL = "https://api.github.com/repos/zyedidia/micro/"
 )
 
+var log = l.Log
+
 // Update replaces the binary runnning this command with a newer one fetched from github releases
 func Update(version string) (*Asset, error) {
 	releases, err := ListReleases()
 
 	if err != nil {
-		Log.Error(err)
+		log.Error(err)
 		return nil, err
 	}
 
 	currentVer, err := semver.NewVersion(version)
 
 	if err != nil {
-		Log.Error(err)
+		log.Error(err)
 		return nil, err
 	}
 
@@ -153,6 +155,7 @@ type Release struct {
 	Description string `json:"body"`
 	Version     string `json:"tag_name"`
 	URL         string `json:"url"`
+	ID          int    `json:"id"`
 
 	Assets []Asset `json:"assets"`
 }
