@@ -17,6 +17,11 @@ func main() {
 	// DELETE NIGHTLY BUILD IN PREPARATION FOR NIGHTLY FROM TRAVIS
 	releases, err := update.ListReleases()
 
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	for _, r := range releases {
 		if r.Version == "nightly" {
 			err := delete(r.ID)

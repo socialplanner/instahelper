@@ -41,3 +41,7 @@ deploy:
   body: Nightly release built on the latest commit
   prerelease: true
   draft: false
+
+cache:
+  directories:
+    - vendor
