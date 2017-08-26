@@ -78,7 +78,7 @@
 									<p class="hidden-lg hidden-md">Dashboard</p>
 								</a>
 							</li>
-							<li class="dropdown">
+							<li class="dropdown" id="notifications">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 										<i class="material-icons">notifications</i>
 										{{ if notifications }}
@@ -123,14 +123,11 @@
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="#">
-	                                Home
-								</a>
-								<a href="https://github.com/socialplanner/instahelper">
-									Github
-								</a>
+								<a href="/">Home</a>
 							</li>
-
+							<li>
+								<a href="https://github.com/socialplanner/instahelper">Github</a>
+							</li>
 						</ul>
 					</nav>
 					<p class="copyright pull-right">
@@ -162,6 +159,9 @@
 
 <!-- Material Dashboard javascript methods -->
 <script src="/js/material-dashboard.js"></script>
+
+<!-- Remove notifications on click -->
+<script src="/js/notifications.js"></script>
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <!-- <script src="/js/demo.js"></script>                       -->

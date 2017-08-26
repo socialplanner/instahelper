@@ -15,6 +15,13 @@ var tmpls = map[string]Page{
 		Icon:     "dashboard",
 		Template: newTemplate("base.html", "dashboard.html"),
 	},
+
+	"register": {
+		Name:     "Add Account",
+		Link:     "/register",
+		Icon:     "person_add",
+		Template: newTemplate("base.html", "register.html"),
+	},
 }
 
 var funcs = template.FuncMap{
@@ -57,15 +64,24 @@ func newTemplate(files ...string) *template.Template {
 	return tmpl
 }
 
-// Execute is shorthand for Page.Template.Execute(w, Page)
-func (p *Page) Execute(w io.Writer) error {
+// Execute is shorthand for Page.Template.Execute(w, Page, data)
+func (p *Page) Execute(w io.Writer, data ...map[string]interface{}) error {
+
+	templateData := map[string]interface{}{
+		"Pages": tmpls,
+		"Title": p.Name,
+		"Icon":  p.Icon,
+		"Link":  p.Link,
+	}
+
+	if len(data) > 0 {
+		for key, val := range data[0] {
+			templateData[key] = val
+		}
+	}
+
 	return p.Template.Execute(
 		w,
-		map[string]interface{}{
-			"Pages": tmpls,
-			"Title": p.Name,
-			"Icon":  p.Icon,
-			"Link":  p.Link,
-		},
+		templateData,
 	)
 }

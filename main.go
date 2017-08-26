@@ -16,6 +16,8 @@ func dashboard(w http.ResponseWriter, r *http.Request) {
 
 	if url == "" {
 		err = tmpl.Template("dashboard").Execute(w)
+	} else if url == "register" {
+		err = tmpl.Template("register").Execute(w)
 	} else {
 		a, err := assets.Asset(url)
 		if err == nil {
@@ -32,5 +34,5 @@ func dashboard(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Println("Rome wasn't built in a day.")
 	http.HandleFunc("/", dashboard)
-	http.ListenAndServe(":8080", nil)
+	fmt.Println(http.ListenAndServe(":8080", nil))
 }

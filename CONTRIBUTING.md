@@ -27,6 +27,7 @@ To ensure your contribution gets added we request you to.
 * Test all code beforehand
 * Setup proper logging
 * Add notable additions/improvements to the [changelog][changelog]
+* Migrate existing BoltDB fields
 
 ```
 golint

@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  name = "github.com/asdine/storm"
+  packages = [".","codec","codec/json","index","internal","q"]
+  revision = "e35194f772fef1442e9f6c8526a6c115ca729638"
+  version = "v1.0.1"
+
+[[projects]]
+  name = "github.com/boltdb/bolt"
+  packages = ["."]
+  revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
+  version = "v1.3.1"
+
+[[projects]]
   name = "github.com/coreos/go-semver"
   packages = ["semver"]
   revision = "8ab6407b697782a06568d4b7f1db25550ec2e4c6"
@@ -17,17 +29,17 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "eb71ad9bd329b5ac0fd0148dd99bd62e8be8e035"
+  revision = "81e90905daefcd6fd217b62423c0908922eadb30"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
-  revision = "07c182904dbd53199946ba614a412c61d3c548f5"
+  revision = "2d6f6f883a06fc0d5f4b14a81e4c28705ea64c15"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "93f8bd5087e1e96b7b971a2e36f04db099306e599025129d180891e419716bc7"
+  inputs-digest = "adaff8af5c3f67529b9d2f9f665a3f981d22d2ca295599ff493d6320b9bdae65"
   solver-name = "gps-cdcl"
   solver-version = 1

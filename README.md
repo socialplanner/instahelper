@@ -2,7 +2,7 @@
 Self Hosted Web Based Instagram Automation Tool
 
 [![GoDoc](https://godoc.org/github.com/socialplanner/instahelper?status.svg)](https://godoc.org/github.com/socialplanner/instahelper) [![Version](https://img.shields.io/badge/version-0.0.1-green.svg)](#development-status) 
-[![Travis](https://img.shields.io/travis/socialplanner/instahelper.svg?style=flat-square)](https://travis-ci.org/socialplanner/instahelper) 
+[![Travis](https://img.shields.io/travis/socialplanner/instahelper.svg?style=flat)](https://travis-ci.org/socialplanner/instahelper) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/socialplanner/instahelper)](https://goreportcard.com/report/github.com/socialplanner/instahelper)
 
 This project is in it's early stages and shouldn't be considered ready for use until reaching `Alpha` status. 
@@ -23,7 +23,7 @@ This project is in it's early stages and shouldn't be considered ready for use u
 
 ## Project Goals
 * Simple
-    * Go for cross platform, portable binaries
+    * Pure Go for cross platform, portable binaries
     * Quickstart - **Download & Run** No Dependencies
     * Simple yet powerful web dashboard
     * One step updates
@@ -41,6 +41,7 @@ This project is in it's early stages and shouldn't be considered ready for use u
     * Self Hosted
     * No need for 3rd party interactions
     * Direct connection to Instagram
+    * Encrypted
 
 * Free
     * No hidden charges
@@ -67,6 +68,7 @@ Please create a new [issue](https://github.com/socialplanner/instahelper/issues/
 * Follow back your followers
 * Follow a user's followers and like/comment on certain number of photos of each follower simultaneously
 * Auto photo posting
+* Custom Jobs
 * **And much much more...**
 * Have an idea? Post it on [Github Issues](https://github.com/socialplanner/instahelper/issues) and follow the [suggestions guide]()
 
