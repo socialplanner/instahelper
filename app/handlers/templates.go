@@ -1,4 +1,4 @@
-package template
+package handlers
 
 import (
 	"html/template"
@@ -6,23 +6,6 @@ import (
 
 	"github.com/socialplanner/instahelper/app/assets"
 )
-
-var tmpls = map[string]Page{
-	// Main Dashboard
-	"dashboard": {
-		Name:     "Dashboard",
-		Link:     "/",
-		Icon:     "dashboard",
-		Template: newTemplate("base.html", "dashboard.html"),
-	},
-
-	"register": {
-		Name:     "Add Account",
-		Link:     "/register",
-		Icon:     "person_add",
-		Template: newTemplate("base.html", "register.html"),
-	},
-}
 
 var funcs = template.FuncMap{
 	"notifications": func() []Notification {
@@ -42,7 +25,7 @@ var funcs = template.FuncMap{
 
 // Template will load the corresponding template with presets.
 func Template(templateName string) *Page {
-	if page, ok := tmpls[templateName]; ok {
+	if page, ok := Pages[templateName]; ok {
 		return &page
 	}
 	return nil
@@ -68,7 +51,7 @@ func newTemplate(files ...string) *template.Template {
 func (p *Page) Execute(w io.Writer, data ...map[string]interface{}) error {
 
 	templateData := map[string]interface{}{
-		"Pages": tmpls,
+		"Pages": Pages,
 		"Title": p.Name,
 		"Icon":  p.Icon,
 		"Link":  p.Link,

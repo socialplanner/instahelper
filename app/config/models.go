@@ -10,6 +10,8 @@ type InstahelperConfig struct {
 	AESKey []byte
 
 	ID int `storm:"id"`
+
+	Port int
 }
 
 // Account is an Instagram Account

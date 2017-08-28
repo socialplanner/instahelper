@@ -2,37 +2,43 @@ package main
 
 import (
 	"fmt"
-	"mime"
 	"net/http"
-	"path/filepath"
+	"time"
 
-	"github.com/socialplanner/instahelper/app/assets"
-	tmpl "github.com/socialplanner/instahelper/app/template"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+
+	"github.com/socialplanner/instahelper/app/handlers"
 )
 
-func dashboard(w http.ResponseWriter, r *http.Request) {
-	var err error
-	url := r.URL.String()[1:]
-
-	if url == "" {
-		err = tmpl.Template("dashboard").Execute(w)
-	} else if url == "register" {
-		err = tmpl.Template("register").Execute(w)
-	} else {
-		a, err := assets.Asset(url)
-		if err == nil {
-			w.Header().Set("Content-Type", mime.TypeByExtension(filepath.Ext(url)))
-			fmt.Fprint(w, string(a))
-		}
-	}
-
-	if err != nil {
-		fmt.Fprint(w, err)
-	}
-}
-
 func main() {
+	// To be removed on working prototype :)
 	fmt.Println("Rome wasn't built in a day.")
-	http.HandleFunc("/", dashboard)
-	fmt.Println(http.ListenAndServe(":8080", nil))
+
+	r := chi.NewRouter()
+
+	// MIDDLEWARE
+	// gzip compress
+	r.Use(middleware.DefaultCompress)
+	// do not cache
+	r.Use(middleware.NoCache)
+	// recovers from panic gracefully
+	r.Use(middleware.Recoverer)
+	// timeout requests after 30 seconds
+	r.Use(middleware.Timeout(time.Second * 30))
+	// redirect "/url/" to "/url"
+	r.Use(middleware.RedirectSlashes)
+
+	// Pages
+	for _, p := range handlers.Pages {
+		r.Get(p.Link, p.Handler())
+	}
+
+	// Assets
+	r.With(handlers.MimeTypeMiddleware).Get(
+		"/assets/*",
+		handlers.AssetsHandler,
+	)
+
+	http.ListenAndServe(":3000", r)
 }

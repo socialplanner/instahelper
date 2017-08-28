@@ -69,6 +69,7 @@ Please create a new [issue](https://github.com/socialplanner/instahelper/issues/
 * Follow a user's followers and like/comment on certain number of photos of each follower simultaneously
 * Auto photo posting
 * Custom Jobs
+* Hosted mode
 * **And much much more...**
 * Have an idea? Post it on [Github Issues](https://github.com/socialplanner/instahelper/issues) and follow the [suggestions guide]()
 

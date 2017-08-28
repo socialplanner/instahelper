@@ -20,6 +20,12 @@
   version = "v0.2.0"
 
 [[projects]]
+  name = "github.com/go-chi/chi"
+  packages = [".","middleware"]
+  revision = "ba73ba0623af32e4e5f09880177e73bd78d98852"
+  version = "v3.2.0"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
@@ -40,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "adaff8af5c3f67529b9d2f9f665a3f981d22d2ca295599ff493d6320b9bdae65"
+  inputs-digest = "6580e7d7ec87e0c3eb7c3ab5f4bc20398ab3e25e6aea94dd642540aacb440016"
   solver-name = "gps-cdcl"
   solver-version = 1

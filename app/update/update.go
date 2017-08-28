@@ -2,6 +2,7 @@
 package update
 
 import (
+	"archive/zip"
 	"encoding/json"
 	"errors"
 	"io"
@@ -50,6 +51,11 @@ func ToLatest(version string) (*Asset, error) {
 	}
 
 	for _, r := range releases {
+		// Skip release if it is a prerelease
+		if r.PreRelease {
+			continue
+		}
+
 		ver, err := semver.NewVersion(strings.Replace(
 			r.Version,
 			"v",
@@ -73,7 +79,7 @@ func ToLatest(version string) (*Asset, error) {
 }
 
 // Update will replace the current binary with the binary with version ver2.
-// Will return error if ver2 not found
+// Will return error if ver not found
 // Update is allowed to update to a lower version
 func Update(ver string) (*Asset, error) {
 	semver1, err := semver.NewVersion(strings.Replace(
@@ -159,21 +165,72 @@ func download(url string) error {
 		return err
 	}
 
+	// fix symbolic links
 	path, err = filepath.EvalSymlinks(path)
 
 	if err != nil {
 		return err
 	}
 
-	f, err := os.Create(path)
+	dir := filepath.Dir(path)
+
+	// Downloads file to dir/temp.zip
+	zipFile := filepath.Join(dir, "temp.zip")
+
+	f, err := os.Create(zipFile)
 
 	if err != nil {
 		return err
 	}
 
+	defer f.Close()
+
 	_, err = io.Copy(f, resp.Body)
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	// unzip and deletes the file
+	err = unzip(zipFile, filepath.Join(dir, "tmp"))
+
+	if err != nil {
+		return err
+	}
+
+	// Open file to the executable
+	exe, err := os.Create(path)
+
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	var name string
+
+	if runtime.GOOS == "windows" {
+		name = "instahelper.exe"
+	} else {
+		name = "instahelper"
+	}
+
+	// Open file to the new executable
+	// Uses name to account for .exe vs no suffix
+	f, err = os.Open(filepath.Join(dir, "tmp", name))
+
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	// Copies it over
+	_, err = io.Copy(exe, f)
+
+	if err != nil {
+		return err
+	}
+
+	return os.RemoveAll(filepath.Join(dir, "tmp"))
 }
 
 func pickAsset(assets []Asset) *Asset {
@@ -208,6 +265,67 @@ func pickAsset(assets []Asset) *Asset {
 	return nil
 }
 
+// unzip a .zip file located at src to dest
+func unzip(src, dest string) error {
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := r.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	os.MkdirAll(dest, 0755)
+
+	// Closure to address file descriptors issue with all the deferred .Close() methods
+	extractAndWriteFile := func(f *zip.File) error {
+		rc, err := f.Open()
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if err := rc.Close(); err != nil {
+				panic(err)
+			}
+		}()
+
+		path := filepath.Join(dest, f.Name)
+
+		if f.FileInfo().IsDir() {
+			os.MkdirAll(path, f.Mode())
+		} else {
+			os.MkdirAll(filepath.Dir(path), f.Mode())
+			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			if err != nil {
+				return err
+			}
+			defer func() {
+				if err := f.Close(); err != nil {
+					panic(err)
+				}
+			}()
+
+			_, err = io.Copy(f, rc)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	for _, f := range r.File {
+		err := extractAndWriteFile(f)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Delete src
+	return os.Remove(src)
+}
+
 // Release is a github release
 type Release struct {
 	Name        string `json:"name"`
@@ -215,6 +333,7 @@ type Release struct {
 	Version     string `json:"tag_name"`
 	URL         string `json:"url"`
 	ID          int    `json:"id"`
+	PreRelease  bool   `json:"prerelease"`
 
 	Assets []Asset `json:"assets"`
 }

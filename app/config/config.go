@@ -53,5 +53,6 @@ func Init() error {
 	return DB.Save(&InstahelperConfig{
 		ID:     1,
 		AESKey: key,
+		Port:   3000,
 	})
 }

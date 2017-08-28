@@ -1,4 +1,4 @@
-package template
+package handlers
 
 import tpl "html/template"
 
