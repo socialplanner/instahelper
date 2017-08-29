@@ -36,3 +36,13 @@
 [[constraint]]
   name = "github.com/boltdb/bolt"
   version = "v1.3.1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/ahmdrz/goinsta"
+# Specific revision
+#  revision = "d5a427c2e1c062782008f0883042f0547a5b6e41"
+
+[[constraint]]
+  name = "github.com/go-chi/chi"
+  version = "v3.2.0"

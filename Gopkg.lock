@@ -2,8 +2,14 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/ahmdrz/goinsta"
+  packages = [".","response"]
+  revision = "d5a427c2e1c062782008f0883042f0547a5b6e41"
+
+[[projects]]
   name = "github.com/asdine/storm"
-  packages = [".","codec","codec/json","index","internal","q"]
+  packages = [".","codec","codec/gob","codec/json","index","internal","q"]
   revision = "e35194f772fef1442e9f6c8526a6c115ca729638"
   version = "v1.0.1"
 
@@ -46,6 +52,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6580e7d7ec87e0c3eb7c3ab5f4bc20398ab3e25e6aea94dd642540aacb440016"
+  inputs-digest = "2b5522887ffbce673bdf1f7b3405ee6b8d47430f2ecfa29befe26a40233fc330"
   solver-name = "gps-cdcl"
   solver-version = 1
