@@ -49,9 +49,8 @@ func newTemplate(files ...string) *template.Template {
 
 // Execute is shorthand for Page.Template.Execute(w, Page, data)
 func (p *Page) Execute(w io.Writer, data ...map[string]interface{}) error {
-
 	templateData := map[string]interface{}{
-		"Pages": Pages,
+		"Pages": SortPages(Pages),
 		"Title": p.Name,
 		"Icon":  p.Icon,
 		"Link":  p.Link,

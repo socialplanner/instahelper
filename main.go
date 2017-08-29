@@ -54,10 +54,15 @@ func main() {
 		handlers.AssetsHandler,
 	)
 
-	// Accounts api
-	r.Route("/accounts", func(r chi.Router) {
-		r.Get("/", handlers.AccountsHandler)
-		r.Post("/create", handlers.CreateAccountHandler)
+	// API
+	r.Route("/api", func(r chi.Router) {
+
+		// Accounts
+		r.Route("/accounts", func(r chi.Router) {
+			r.Get("/", handlers.APIAccountsHandler)
+			r.Post("/create", handlers.APICreateAccountHandler)
+		})
+
 	})
 
 	c, err := config.Config()

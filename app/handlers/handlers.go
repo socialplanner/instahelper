@@ -18,6 +18,7 @@ var (
 var Pages = map[string]Page{
 	// Main Dashboard
 	"dashboard": {
+		ID:       1,
 		Name:     "Dashboard",
 		Link:     "/",
 		Icon:     "dashboard",
@@ -25,10 +26,19 @@ var Pages = map[string]Page{
 	},
 
 	"register": {
+		ID:       2,
 		Name:     "Add Account",
 		Link:     "/register",
 		Icon:     "person_add",
 		Template: newTemplate("base.html", "register.html"),
+	},
+
+	"accounts": {
+		ID:       3,
+		Name:     "Accounts",
+		Link:     "/accounts",
+		Icon:     "people",
+		Template: newTemplate("base.html", "accounts.html"),
 	},
 }
 
@@ -39,6 +49,8 @@ func (p *Page) Handler() func(http.ResponseWriter, *http.Request) {
 		return DashboardHandler
 	case "Add Account":
 		return RegisterHandler
+	case "Accounts":
+		return AccountsHandler
 	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -61,6 +73,17 @@ func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 // RegisterHandler is the handler for the "Add Account" page of Instahelper
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	err := Template("register").Execute(w)
+
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		Error(w, err)
+	}
+}
+
+// AccountsHandler is the handler for the "Accounts" page of Instahelper
+func AccountsHandler(w http.ResponseWriter, r *http.Request) {
+	err := Template("accounts").Execute(w)
 
 	if err != nil {
 		log.Error(err)

@@ -6,8 +6,7 @@ GOOSES = linux darwin windows
 RUNCMD = ./instahelper
 RUNCMDWIN = ./instahelper.exe 
 
-default:
-	debug
+default: debug
 
 build: version deps
 	go get -u github.com/jteeuwen/go-bindata/...

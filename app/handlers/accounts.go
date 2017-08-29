@@ -10,8 +10,8 @@ import (
 	"github.com/socialplanner/instahelper/app/insta"
 )
 
-// CreateAccountHandler is a http.Handler which should be used to save an account to db.
-func CreateAccountHandler(w http.ResponseWriter, r *http.Request) {
+// APICreateAccountHandler is a http.Handler which should be used to save an account to db.
+func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO, check if is a valid account/needs to break captcha.
 	// TODO encrypt
 	username := r.PostFormValue("username")
@@ -73,8 +73,8 @@ func CreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("Successfully added %s!", username)))
 }
 
-// AccountsHandler will return a list of all accounts marshalled into JSON
-func AccountsHandler(w http.ResponseWriter, r *http.Request) {
+// APIAccountsHandler will return a list of all accounts marshalled into JSON
+func APIAccountsHandler(w http.ResponseWriter, r *http.Request) {
 	var accs = &[]config.Account{}
 	err := config.DB.All(accs)
 
