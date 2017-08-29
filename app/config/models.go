@@ -11,7 +11,23 @@ type InstahelperConfig struct {
 
 	ID int `storm:"id"`
 
+	// Port to run the application on - defaults to :3000
 	Port int
+
+	// Domain to run the application on if running on a server
+	Domain string
+
+	// Path to SSLKey used to run with https - Usually obtained by LetsEncrypt
+	SSLKey string
+
+	// Path to SSLCert used to run with https - Usually obtained by LetsEncrypt
+	SSLCert string
+
+	// Name for basic auth
+	Name string
+
+	// Password for basic auth
+	Password string
 }
 
 // Account is an Instagram Account
@@ -19,7 +35,7 @@ type Account struct {
 	ID int `storm:"id,increment" json:"id,omitempty"`
 
 	Username string `storm:"unique" json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
+	Password string `json:"-"`
 
 	// Cached GoInsta object
 	CachedInsta []byte `json:"cached_insta,omitempty"`
