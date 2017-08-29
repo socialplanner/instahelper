@@ -32,7 +32,7 @@ var Pages = map[string]Page{
 	},
 }
 
-// Handler is the http.Handler for the corresponding page
+// Handler returns the http.Handler for the corresponding page
 func (p *Page) Handler() func(http.ResponseWriter, *http.Request) {
 	switch p.Name {
 	case "Dashboard":

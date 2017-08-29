@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/asdine/storm"
+	"github.com/asdine/storm/codec/gob"
 )
 
 // DB is the wrapper around BoltDB. It contains an instance of BoltDB and uses it to perform all the
@@ -18,24 +19,33 @@ var DB *storm.DB
 
 // Open opens a database at the set location
 func Open() error {
+	// Creates the directory, ignores err.
+	os.Mkdir(ConfigDir, 0777)
+
 	var existed bool
 
 	if _, err := os.Stat(filepath.Join(ConfigDir, "instahelper.db")); err == nil {
 		existed = true
 	}
 
-	db, err := storm.Open(filepath.Join(ConfigDir, "instahelper.db"))
+	// Uses gob codec
+	db, err := storm.Open(filepath.Join(ConfigDir, "instahelper.db"), storm.Codec(gob.Codec))
+
+	if err != nil {
+		return err
+	}
+
+	DB = db
+
+	err = Migrate()
 
 	if err != nil {
 		return err
 	}
 
 	if !existed {
-		Init()
+		createConfig()
 	}
-
-	Migrate()
-	DB = db
 
 	return nil
 }
@@ -45,11 +55,16 @@ func Close() error {
 	return DB.Close()
 }
 
-// Init will create the InstahelperConfig
-func Init() error {
-	key := make([]byte, 64)
+// createConfig will create the InstahelperConfig
+func createConfig() error {
+	key := make([]byte, 32)
 	rand.Read(key)
 
+	c := &[]InstahelperConfig{}
+
+	if DB.All(c); len(*c) > 0 {
+		return nil
+	}
 	return DB.Save(&InstahelperConfig{
 		ID:     1,
 		AESKey: key,

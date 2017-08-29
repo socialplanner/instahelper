@@ -16,58 +16,67 @@ type InstahelperConfig struct {
 
 // Account is an Instagram Account
 type Account struct {
-	ID int `storm:"id,increment"`
+	ID int `storm:"id,increment" json:"id,omitempty"`
 
-	Username string `storm:"unique"`
-	Password string
+	Username string `storm:"unique" json:"username,omitempty"`
+	Password string `json:"password,omitempty"`
 
 	// Cached GoInsta object
-	CachedInsta []byte
+	CachedInsta []byte `json:"cached_insta,omitempty"`
 
-	// Settings is not inline to be able to copy over settings
-	Settings Settings
+	// Settings is not inline to be able to copy over settings between accounts
+	Settings *Settings `json:"settings,omitempty"`
 
 	// AddedAt is when the user added this account
-	AddedAt time.Time `storm:"index"`
+	AddedAt time.Time `storm:"index" json:"added_at,omitempty"`
 }
 
 // Settings for a given account
 type Settings struct {
-	FollowsPerDay   int
-	CommentsPerDay  int
-	LikesPerDay     int
-	UnfollowsPerDay int
+	FollowsPerDay   int `json:"follows_per_day,omitempty"`
+	CommentsPerDay  int `json:"comments_per_day,omitempty"`
+	LikesPerDay     int `json:"likes_per_day,omitempty"`
+	UnfollowsPerDay int `json:"unfollows_per_day,omitempty"`
 
 	// Proxy to make requests with
-	Proxy string
+	Proxy string `json:"proxy,omitempty"`
 
 	// UnfollowAt is the number of follows when the bot should start unfollowing
-	UnfollowAt int
+	UnfollowAt int `json:"unfollow_at,omitempty"`
 	// UnfollowNonFollowers will decide if we unfollow those who do not follow after one day
-	UnfollowNonFollowers bool
+	UnfollowNonFollowers bool `json:"unfollow_non_followers,omitempty"`
 
 	// Tags to follow, comment, or like
-	Tags []string
+	Tags []string `json:"tags,omitempty"`
 	// CommentList is the list of comments to choose from when commenting
-	CommentList []string
+	CommentList []string `json:"comment_list,omitempty"`
 
 	// Blacklist is a list of accounts to avoid following, commenting, or liking
-	Blacklist []string
+	Blacklist []string `json:"blacklist,omitempty"`
 	// Whitelist is the list of users to only follow, comment, and like on
-	Whitelist []string
+	Whitelist []string `json:"whitelist,omitempty"`
 
 	// FollowPrivate will decide if we follow private accounts
-	FollowPrivate bool
+	FollowPrivate bool `json:"follow_private,omitempty"`
 }
 
-var models = []interface{}{
+// Models for boltdb
+var Models = []interface{}{
 	&Account{}, &InstahelperConfig{},
 }
 
 // Migrate will reindex all fields
-func Migrate() {
+func Migrate() error {
 
-	for _, m := range models {
-		DB.ReIndex(m)
+	for _, m := range Models {
+
+		if err := DB.Init(m); err != nil {
+			return err
+		}
+
+		if err := DB.ReIndex(m); err != nil {
+			return err
+		}
 	}
+	return nil
 }

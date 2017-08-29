@@ -83,4 +83,4 @@ We welcome all help/contributions to Instahelper. Just follow this guide first.
 
 ## Development Status:
 ### PreAlpha
-Project isn't functioning yet, but will be soon! Master Branch is likely to be broken/subject to change.
+Project isn't functioning yet, but will be soon! Master Branch is likely to be broken/subject to change. Updates may need to be done manually.
