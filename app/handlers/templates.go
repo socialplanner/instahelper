@@ -5,22 +5,11 @@ import (
 	"io"
 
 	"github.com/socialplanner/instahelper/app/assets"
+	"github.com/socialplanner/instahelper/app/notifications"
 )
 
 var funcs = template.FuncMap{
-	"notifications": func() []Notification {
-		// TODO. Replace with a method to actually get notifications
-		return []Notification{
-			{
-				Text: "Test Notification",
-				Link: "https://twitter.com/spieswithin",
-			},
-			{
-				Text: "Test Notification 2",
-				Link: "https://twitter.com/spieswithin",
-			},
-		}
-	},
+	"notifications": notifications.GetNotifications,
 }
 
 // Template will load the corresponding template with presets.

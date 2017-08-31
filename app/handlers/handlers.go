@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/socialplanner/instahelper/app/assets"
+	"github.com/socialplanner/instahelper/app/config"
 
 	l "github.com/socialplanner/instahelper/app/log"
 )
@@ -83,7 +84,18 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 // AccountsHandler is the handler for the "Accounts" page of Instahelper
 func AccountsHandler(w http.ResponseWriter, r *http.Request) {
-	err := Template("accounts").Execute(w)
+	var accs = &[]config.Account{}
+	err := config.DB.All(accs)
+
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		Error(w, err)
+	}
+
+	err = Template("accounts").Execute(w, map[string]interface{}{
+		"Accounts": accs,
+	})
 
 	if err != nil {
 		log.Error(err)

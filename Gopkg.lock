@@ -38,6 +38,11 @@
   version = "v1.0.3"
 
 [[projects]]
+  name = "github.com/skratchdot/open-golang"
+  packages = ["open"]
+  revision = "75fb7ed4208cf72d323d7d02fd1a5964a7a9073c"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
@@ -52,6 +57,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2b5522887ffbce673bdf1f7b3405ee6b8d47430f2ecfa29befe26a40233fc330"
+  inputs-digest = "7180698fd4c3ceacae8bc7cc0b9fb798c4207862c4a3ca6438f3b781245eb962"
   solver-name = "gps-cdcl"
   solver-version = 1

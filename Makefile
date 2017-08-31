@@ -1,6 +1,7 @@
 .PHONY: assets test
 
 GOARCHES = 386 amd64
+BITS = 32 64
 GOOSES = linux darwin windows
 
 RUNCMD = ./instahelper
@@ -28,14 +29,20 @@ build: version deps
 	$(if $(filter linux,$(os)), echo $(RUNCMD) > dist/instahelper-$(v)-$(os)-$(arch)/run.sh;) \
 	))
 	
+# Renames 386 > 32, amd64 > 64
+	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), \
+	$(if $(filter 386,$(arch)), mv dist/instahelper-$(v)-$(os)-$(arch) dist/instahelper-$(v)-$(os)-32; ) \
+	$(if $(filter amd64,$(arch)), mv dist/instahelper-$(v)-$(os)-$(arch) dist/instahelper-$(v)-$(os)-64; ) \
+	))
+
 # Appends .exe to windows
-	@$(foreach arch,$(GOARCHES), mv dist/instahelper-$(v)-windows-$(arch)/instahelper dist/instahelper-$(v)-windows-$(arch)/instahelper.exe;)
+	@$(foreach bit,$(BITS), mv dist/instahelper-$(v)-windows-$(bit)/instahelper dist/instahelper-$(v)-windows-$(bit)/instahelper.exe;)
 
 # Creates a zip archive of each folder
-	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), zip -rj dist/instahelper-$(v)-$(os)-$(arch).zip dist/instahelper-$(v)-$(os)-$(arch);))
+	@$(foreach bit,$(BITS),$(foreach os,  $(GOOSES), zip -rj dist/instahelper-$(v)-$(os)-$(bit).zip dist/instahelper-$(v)-$(os)-$(bit);))
 
 # Deletes the original folders
-	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), rm -rf dist/instahelper-$(v)-$(os)-$(arch);))
+	@$(foreach bit,$(BITS),$(foreach os,  $(GOOSES), rm -rf dist/instahelper-$(v)-$(os)-$(bit);))
 
 debug: assets
 	go run main.go

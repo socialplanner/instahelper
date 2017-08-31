@@ -40,9 +40,16 @@
 [[constraint]]
   branch = "master"
   name = "github.com/ahmdrz/goinsta"
-# Specific revision
-#  revision = "d5a427c2e1c062782008f0883042f0547a5b6e41"
+# revision = "d5a427c2e1c062782008f0883042f0547a5b6e41"
 
 [[constraint]]
   name = "github.com/go-chi/chi"
   version = "v3.2.0"
+
+[[constraint]]
+  name = "github.com/skratchdot/open-golang"
+  revision = "75fb7ed4208cf72d323d7d02fd1a5964a7a9073c"
+
+[[constraint]]
+  name = "github.com/gorilla/websocket"
+  version = "v1.2.0"

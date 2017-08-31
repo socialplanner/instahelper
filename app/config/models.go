@@ -38,7 +38,7 @@ type Account struct {
 	Password string `json:"-"`
 
 	// Cached GoInsta object
-	CachedInsta []byte `json:"cached_insta,omitempty"`
+	CachedInsta []byte `json:"-"`
 
 	// Settings is not inline to be able to copy over settings between accounts
 	Settings *Settings `json:"settings,omitempty"`
@@ -76,9 +76,16 @@ type Settings struct {
 	FollowPrivate bool `json:"follow_private,omitempty"`
 }
 
+// A Notification that would be shown in the top navbar.
+type Notification struct {
+	ID   int    `storm:"id,increment" json:"id"`
+	Link string `json:"link"`
+	Text string `json:"text,omitempty"`
+}
+
 // Models for boltdb
 var Models = []interface{}{
-	&Account{}, &InstahelperConfig{},
+	&Account{}, &InstahelperConfig{}, &Notification{},
 }
 
 // Migrate will reindex all fields

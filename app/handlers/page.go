@@ -27,7 +27,8 @@ type Page struct {
 }
 
 // SortPages will return the list of pages sorted by ID.
-// https://stackoverflow.com/questions/18695346/how-to-sort-a-mapstringint-by-its-values
+//
+// See: https://stackoverflow.com/questions/18695346/how-to-sort-a-mapstringint-by-its-values
 func SortPages(m map[string]Page) []Page {
 	// Temp struct
 	type kv struct {

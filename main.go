@@ -9,9 +9,12 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 
+	"github.com/skratchdot/open-golang/open"
+
 	"github.com/socialplanner/instahelper/app/config"
 	"github.com/socialplanner/instahelper/app/handlers"
 	l "github.com/socialplanner/instahelper/app/log"
+	"github.com/socialplanner/instahelper/app/notifications"
 )
 
 var log = l.Log
@@ -61,10 +64,22 @@ func main() {
 		r.Route("/accounts", func(r chi.Router) {
 			r.Get("/", handlers.APIAccountsHandler)
 			r.Post("/create", handlers.APICreateAccountHandler)
+			r.Delete("/{username}", handlers.APIDeleteAccountHandler)
 		})
 
+		r.Route("/notifications", func(r chi.Router) {
+			r.Delete("/", handlers.APIDeleteNotificationsHandler)
+		})
 	})
 
+	// Websocket handler
+	go notifications.Hub.Start()
+	r.Get("/ws", notifications.WSHandler)
+
+	r.Get("/sa", func(w http.ResponseWriter, r *http.Request) {
+		notifications.NewNotification("test", "https://google.com")
+	})
+	//  Setup before listen
 	c, err := config.Config()
 
 	if err != nil {
@@ -80,6 +95,12 @@ func main() {
 		}
 
 		log.Infof("Up and running at http://%s:%d !", ip, c.Port)
+		err = open.Run(fmt.Sprintf("http://%s:%d", ip, c.Port))
+
+		if err != nil {
+			log.Error(err)
+		}
+
 	}()
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", c.Port), r))

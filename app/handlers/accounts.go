@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/socialplanner/instahelper/app/config"
 	"github.com/socialplanner/instahelper/app/insta"
 )
@@ -19,8 +20,7 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	proxy := r.PostFormValue("proxy")
 
 	if username == "" || password == "" {
-		w.Write([]byte("Invalid Form Input"))
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, "Invalid Form Input", http.StatusBadRequest)
 		return
 	}
 	acc := &config.Account{}
@@ -28,8 +28,7 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	config.DB.One("Username", username, acc)
 
 	if acc.Username == username {
-		w.WriteHeader(http.StatusConflict)
-		w.Write([]byte("An account with that username already exists."))
+		http.Error(w, "An account with that username already exists.", http.StatusConflict)
 		return
 	}
 
@@ -37,8 +36,7 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	passwordENC, err := insta.Encrypt(password)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -46,27 +44,26 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		// Bad username/password combo or captcha
-		w.WriteHeader(http.StatusBadGateway)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusBadGateway)
 		return
 	}
 
 	err = config.DB.Save(&config.Account{
-		Username:    username,
-		Password:    passwordENC,
-		AddedAt:     time.Now(),
-		Settings:    &config.Settings{},
+		Username: username,
+		Password: passwordENC,
+		AddedAt:  time.Now(),
+		Settings: &config.Settings{
+			Proxy: proxy,
+		},
 		CachedInsta: ig,
 	})
 
 	if err != nil {
 		if err.Error() == "already exists" {
-			w.WriteHeader(http.StatusConflict)
-			w.Write([]byte("An account with that username already exists."))
+			http.Error(w, "An account with that username already exists.", http.StatusConflict)
 			return
 		}
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -79,19 +76,44 @@ func APIAccountsHandler(w http.ResponseWriter, r *http.Request) {
 	err := config.DB.All(accs)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	b, err := json.Marshal(accs)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(b)
+}
+
+// APIDeleteAccountHandler is the http.Handler used to delete an account from the database
+func APIDeleteAccountHandler(w http.ResponseWriter, r *http.Request) {
+	username := chi.URLParam(r, "username") // /api/accounts/{username}
+	acc := &config.Account{}
+
+	err := config.DB.One("Username", username, acc)
+
+	if err != nil {
+		if err.Error() == "not found" {
+			http.Error(w, "Account with the username not found", http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = config.DB.DeleteStruct(acc)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write([]byte("Deleted " + username))
 }
