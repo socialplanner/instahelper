@@ -1,6 +1,6 @@
 language: go
 go:
-- 1.9.x
+- 1.9.1
 - master
 - tip
 install: true
@@ -28,7 +28,7 @@ deploy:
     branch: master
     repo: socialplanner/instahelper
     tags: false
-    go: 1.9.x
+    go: 1.9.1
   name: Nightly
   body: Nightly release built on the latest commit to the repo.
   prerelease: true
@@ -36,6 +36,7 @@ deploy:
 cache:
   directories:
   - vendor
+  - $GOPATH/pkg/dep
 
 env:
   global:
