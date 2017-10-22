@@ -28,8 +28,9 @@ const (
 func ToLatest(version string) (*Asset, error) {
 	var currentVer *semver.Version
 
+	// HACKY
 	if version == "" {
-		currentVer, _ = semver.NewVersion("0.0.1")
+		version = "0.0.1"
 	}
 
 	releases, err := ListReleases()
@@ -180,6 +181,7 @@ func download(url string) error {
 	}
 
 	defer f.Close()
+	defer os.RemoveAll(filepath.Join(dir, "tmp"))
 
 	_, err = io.Copy(f, resp.Body)
 
@@ -222,11 +224,7 @@ func download(url string) error {
 	// Copies it over
 	_, err = io.Copy(exe, f)
 
-	if err != nil {
-		return err
-	}
-
-	return os.RemoveAll(filepath.Join(dir, "tmp"))
+	return err
 }
 
 func pickAsset(assets []Asset) *Asset {

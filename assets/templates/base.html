@@ -55,9 +55,9 @@
 					{{range .Pages}} {{if not .Unlisted}}
 					<li {{if eq $.Title .Name}} class="active" {{end}}>
 						<a href={{.Link}}>
-	                        <i class="material-icons">{{.Icon}}</i>
-	                        <p>{{.Name}}</p>
-	                    </a>
+							<i class="material-icons">{{.Icon}}</i>
+							<p>{{.Name}}</p>
+						</a>
 					</li>
 					{{end}} {{end}}
 				</ul>
@@ -80,16 +80,23 @@
 						<ul class="nav navbar-nav navbar-right">
 							<li class="dropdown" id="notifications">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-										<i class="material-icons">notifications</i>
-										{{ if gt (len notifications) 0 }}
-										<span class="notification">{{(len notifications)}}</span>
-										{{ end }}
-										<p class="hidden-lg hidden-md">Notifications</p>
-								  </a>
+									<i class="material-icons">notifications</i>
+									{{ if gt (len notifications) 0 }}
+									<span class="notification">{{(len notifications)}}</span>
+									{{ end }}
+									<p class="hidden-lg hidden-md">Notifications</p>
+								</a>
 								<ul class="dropdown-menu">
-									<li id="clear-all"><a href="#" style="text-align: center;"><b>CLEAR ALL</b></a></li>
-									{{range notifications}}
-									<li><a href={{.Link}}>{{.Text}}</a></li>
+									{{ if gt (len notifications) 0 }}
+									<li id="clear-all">
+										<a href="#" style="text-align: center;">
+											<b>CLEAR ALL</b>
+										</a>
+									</li>
+									{{ end }} {{range notifications}}
+									<li>
+										<a href={{.Link}}>{{.Text}}</a>
+									</li>
 									{{end}}
 								</ul>
 							</li>
@@ -101,7 +108,8 @@
 								<span class="material-input"></span>
 							</div>
 							<button type="submit" class="btn btn-white btn-round btn-just-icon">
-								<i class="material-icons">search</i><div class="ripple-container"></div>
+								<i class="material-icons">search</i>
+								<div class="ripple-container"></div>
 							</button>
 						</form>
 					</div>
@@ -129,7 +137,8 @@
 						&copy;
 						<script>
 							document.write(new Date().getFullYear())
-						</script> <a href="https://twitter.com/spieswithin">Jay Nagpaul</a>
+						</script>
+						<a href="https://twitter.com/spieswithin">Jay Nagpaul</a>
 					</p>
 				</div>
 			</footer>

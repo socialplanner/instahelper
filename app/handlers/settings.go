@@ -9,7 +9,7 @@ import (
 // SettingsHandler is the handler for the page to change account settings
 // TODO
 func SettingsHandler(w http.ResponseWriter, r *http.Request) {
-	p := Template("account")
+	p := Template("settings")
 
 	username := chi.URLParam(r, "username")
 

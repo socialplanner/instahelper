@@ -70,7 +70,7 @@ Please create a new [issue](https://github.com/socialplanner/instahelper/issues/
 * Auto photo posting
 * Custom Jobs
 * Hosted mode
-* API for the developers
+* API for the developers / Lua Plugin System (?)
 * **And much much more...**
 * Have an idea? Post it on [Github Issues](https://github.com/socialplanner/instahelper/issues) and follow the [suggestions guide]()
 
