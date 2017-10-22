@@ -11,7 +11,7 @@ type InstahelperConfig struct {
 
 	ID int `storm:"id"`
 
-	// Port to run the application on - defaults to :3000
+	// Port to run the application on - defaults to :3333
 	Port int
 
 	// Domain to run the application on if running on a server

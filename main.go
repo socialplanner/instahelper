@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
 	"net/http"
@@ -19,6 +20,10 @@ import (
 )
 
 func main() {
+	port := flag.Int("port", 3333, "Port to run Instahelper on")
+	debug := flag.Bool("debug", false, "Run in debug mode")
+
+	flag.Parse()
 	// To be removed on working prototype :)
 	fmt.Println("Rome wasn't built in a day.")
 
@@ -43,6 +48,10 @@ func main() {
 	r.Use(middleware.Timeout(time.Second * 30))
 	// redirect "/url/" to "/url"
 	r.Use(middleware.RedirectSlashes)
+
+	if *debug {
+		r.Use(middleware.Logger)
+	}
 
 	// ROUTES
 	// Pages
@@ -88,6 +97,11 @@ func main() {
 		logrus.Fatal(err)
 	}
 
+	// Use config if no port passed
+	if *port == 3333 {
+		*port = c.Port
+	}
+
 	go func() {
 		time.Sleep(time.Second)
 		ip, err := localIP()
@@ -96,8 +110,8 @@ func main() {
 			ip = "localhost"
 		}
 
-		logrus.Infof("Up and running at http://%s:%d !", ip, c.Port)
-		err = open.Run(fmt.Sprintf("http://%s:%d", ip, c.Port))
+		logrus.Infof("Up and running at http://%s:%d !", ip, *port)
+		err = open.Run(fmt.Sprintf("http://%s:%d", ip, *port))
 
 		if err != nil {
 			logrus.Error(err)
@@ -105,7 +119,7 @@ func main() {
 
 	}()
 
-	logrus.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", c.Port), r))
+	logrus.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), r))
 }
 
 // localIP returns the local ip of the current device
