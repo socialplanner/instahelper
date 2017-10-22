@@ -52,14 +52,14 @@
 
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					{{range .Pages}}
+					{{range .Pages}} {{if not .Unlisted}}
 					<li {{if eq $.Title .Name}} class="active" {{end}}>
 						<a href={{.Link}}>
 	                        <i class="material-icons">{{.Icon}}</i>
 	                        <p>{{.Name}}</p>
 	                    </a>
 					</li>
-					{{end}}
+					{{end}} {{end}}
 				</ul>
 			</div>
 		</div>
@@ -95,7 +95,7 @@
 							</li>
 						</ul>
 
-						<form class="navbar-form navbar-right" role="search">
+						<form style="display:none;" class="navbar-form navbar-right" role="search">
 							<div class="form-group  is-empty">
 								<input type="text" class="form-control" placeholder="Search">
 								<span class="material-input"></span>

@@ -8,64 +8,80 @@ import (
 	"github.com/socialplanner/instahelper/app/assets"
 	"github.com/socialplanner/instahelper/app/config"
 
-	l "github.com/socialplanner/instahelper/app/log"
-)
-
-var (
-	log = l.Log
+	"github.com/sirupsen/logrus"
 )
 
 // Pages is a collection of all pages of instahelper
-var Pages = map[string]Page{
-	// Main Dashboard
-	"dashboard": {
-		ID:       1,
-		Name:     "Dashboard",
-		Link:     "/",
-		Icon:     "dashboard",
-		Template: newTemplate("base.html", "dashboard.html"),
-	},
+var Pages = map[string]Page{}
 
-	"register": {
-		ID:       2,
-		Name:     "Add Account",
-		Link:     "/register",
-		Icon:     "person_add",
-		Template: newTemplate("base.html", "register.html"),
-	},
+func init() {
+	// Pages is a collection of all pages of instahelper
+	Pages = map[string]Page{
+		// Main Dashboard
+		"dashboard": {
+			ID:       1,
+			Name:     "Dashboard",
+			Link:     "/",
+			Icon:     "dashboard",
+			Template: newTemplate("base.html", "dashboard.html"),
+			Handler:  DashboardHandler,
+		},
 
-	"accounts": {
-		ID:       3,
-		Name:     "Accounts",
-		Link:     "/accounts",
-		Icon:     "people",
-		Template: newTemplate("base.html", "accounts.html"),
-	},
+		"register": {
+			ID:       2,
+			Name:     "Add Account",
+			Link:     "/register",
+			Icon:     "person_add",
+			Template: newTemplate("base.html", "register.html"),
+			Handler:  RegisterHandler,
+		},
+
+		"accounts": {
+			ID:       3,
+			Name:     "Accounts",
+			Link:     "/accounts",
+			Icon:     "people",
+			Template: newTemplate("base.html", "accounts.html"),
+			Handler:  AccountsHandler,
+		},
+
+		"settings": {
+			ID:       4,
+			Name:     "Settings",
+			Link:     "/accounts/{username}",
+			Icon:     "settings",
+			Template: newTemplate("base.html", "account.html"),
+			Unlisted: true,
+			Handler:  SettingsHandler,
+		},
+	}
 }
 
-// Handler returns the http.Handler for the corresponding page
-func (p *Page) Handler() func(http.ResponseWriter, *http.Request) {
-	switch p.Name {
-	case "Dashboard":
-		return DashboardHandler
-	case "Add Account":
-		return RegisterHandler
-	case "Accounts":
-		return AccountsHandler
-	}
+// // Handler returns the http.Handler for the corresponding page
+// func (p *Page) Handler() func(http.ResponseWriter, *http.Request) {
+// 	switch p.Name {
+// 	case "Dashboard":
+// 		return DashboardHandler
+// 	case "Add Account":
+// 		return RegisterHandler
+// 	case "Accounts":
+// 		return AccountsHandler
+// 	case "Settings":
+// 		return SettingsHandler
+// 	}
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusNotFound)
-		http.Redirect(w, r, "/", http.StatusPermanentRedirect)
-	}
-}
+// 	return func(w http.ResponseWriter, r *http.Request) {
+// 		w.WriteHeader(http.StatusNotFound)
+// 		http.Redirect(w, r, "/", http.StatusPermanentRedirect)
+// 	}
+// }
 
 // DashboardHandler is the handler for the main dashboard of Instahelper
 func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 	err := Template("dashboard").Execute(w)
 
 	if err != nil {
-		log.Error(err)
+		logrus.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
 	}
@@ -76,7 +92,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	err := Template("register").Execute(w)
 
 	if err != nil {
-		log.Error(err)
+		logrus.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
 	}
@@ -88,7 +104,7 @@ func AccountsHandler(w http.ResponseWriter, r *http.Request) {
 	err := config.DB.All(accs)
 
 	if err != nil {
-		log.Error(err)
+		logrus.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
 	}
@@ -98,7 +114,7 @@ func AccountsHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		log.Error(err)
+		logrus.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
 	}

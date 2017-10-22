@@ -11,13 +11,12 @@ import (
 
 	"github.com/skratchdot/open-golang/open"
 
+	"github.com/sirupsen/logrus"
+
 	"github.com/socialplanner/instahelper/app/config"
 	"github.com/socialplanner/instahelper/app/handlers"
-	l "github.com/socialplanner/instahelper/app/log"
 	"github.com/socialplanner/instahelper/app/notifications"
 )
-
-var log = l.Log
 
 func main() {
 	// To be removed on working prototype :)
@@ -26,7 +25,7 @@ func main() {
 	err := config.Open()
 
 	if err != nil {
-		log.Fatal("While opening db ", err)
+		logrus.Fatal("While opening db ", err)
 	}
 
 	defer config.Close()
@@ -48,7 +47,7 @@ func main() {
 	// ROUTES
 	// Pages
 	for _, p := range handlers.Pages {
-		r.Get(p.Link, p.Handler())
+		r.Get(p.Link, p.Handler)
 	}
 
 	// Assets
@@ -70,20 +69,23 @@ func main() {
 		r.Route("/notifications", func(r chi.Router) {
 			r.Delete("/", handlers.APIDeleteNotificationsHandler)
 		})
+
+		r.Route("/update", func(r chi.Router) {
+			r.Post("/to/{version}", handlers.APIUpdateToHandler)
+			r.Post("/", handlers.APIUpdateHandler)
+		})
+
 	})
 
 	// Websocket handler
 	go notifications.Hub.Start()
 	r.Get("/ws", notifications.WSHandler)
 
-	r.Get("/sa", func(w http.ResponseWriter, r *http.Request) {
-		notifications.NewNotification("test", "https://google.com")
-	})
 	//  Setup before listen
 	c, err := config.Config()
 
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
 	go func() {
@@ -94,16 +96,16 @@ func main() {
 			ip = "localhost"
 		}
 
-		log.Infof("Up and running at http://%s:%d !", ip, c.Port)
+		logrus.Infof("Up and running at http://%s:%d !", ip, c.Port)
 		err = open.Run(fmt.Sprintf("http://%s:%d", ip, c.Port))
 
 		if err != nil {
-			log.Error(err)
+			logrus.Error(err)
 		}
 
 	}()
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", c.Port), r))
+	logrus.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", c.Port), r))
 }
 
 // localIP returns the local ip of the current device

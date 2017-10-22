@@ -40,7 +40,6 @@
 [[constraint]]
   branch = "master"
   name = "github.com/ahmdrz/goinsta"
-# revision = "d5a427c2e1c062782008f0883042f0547a5b6e41"
 
 [[constraint]]
   name = "github.com/go-chi/chi"

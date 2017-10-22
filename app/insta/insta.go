@@ -21,6 +21,7 @@ func CachedInsta(username, password, proxy string) ([]byte, error) {
 		return []byte{}, err
 	}
 
+	// Export the cached instagram object using the configs AESKey.
 	return ig.Export(c.AESKey)
 }
 

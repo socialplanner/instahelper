@@ -15,20 +15,16 @@ import (
 	"time"
 
 	"github.com/coreos/go-semver/semver"
-	l "github.com/socialplanner/instahelper/app/log"
+	"github.com/sirupsen/logrus"
 )
 
 const (
 	baseURL = "https://api.github.com/repos/socialplanner/instahelper/"
 )
 
-var (
-	log = l.Log
-)
-
 // ToLatest replaces the binary runnning this command with the latest binary available on github releases
 // If version is an empty string, it will fetch and replace the binary no matter what.
-// Else: it will only replace it if the version is greater than the current version
+// Else it will only replace it if the version is greater than the current version
 func ToLatest(version string) (*Asset, error) {
 	var currentVer *semver.Version
 
@@ -39,14 +35,14 @@ func ToLatest(version string) (*Asset, error) {
 	releases, err := ListReleases()
 
 	if err != nil {
-		log.Error(err)
+		logrus.Error(err)
 		return nil, err
 	}
 
 	currentVer, err = semver.NewVersion(version)
 
 	if err != nil {
-		log.Error(err)
+		logrus.Error(err)
 		return nil, err
 	}
 
@@ -78,10 +74,10 @@ func ToLatest(version string) (*Asset, error) {
 	return nil, errors.New("No available download")
 }
 
-// Update will replace the current binary with the binary with version ver2.
+// To will replace the current binary with the binary with version ver.
 // Will return error if ver not found
 // Update is allowed to update to a lower version
-func Update(ver string) (*Asset, error) {
+func To(ver string) (*Asset, error) {
 	semver1, err := semver.NewVersion(strings.Replace(
 		ver,
 		"v",

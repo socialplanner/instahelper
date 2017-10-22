@@ -2,6 +2,7 @@ package handlers
 
 import (
 	tpl "html/template"
+	"net/http"
 	"sort"
 )
 
@@ -24,6 +25,11 @@ type Page struct {
 
 	// html/template.Template to execute
 	Template *tpl.Template
+
+	Handler http.HandlerFunc
+
+	// To show it on sidebar or not
+	Unlisted bool
 }
 
 // SortPages will return the list of pages sorted by ID.

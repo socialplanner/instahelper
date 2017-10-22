@@ -23,10 +23,7 @@ type InstahelperConfig struct {
 	// Path to SSLCert used to run with https - Usually obtained by LetsEncrypt
 	SSLCert string
 
-	// Name for basic auth
-	Name string
-
-	// Password for basic auth
+	// Password for Instahelper
 	Password string
 }
 
