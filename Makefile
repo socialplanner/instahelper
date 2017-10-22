@@ -9,9 +9,7 @@ RUNCMDWIN = ./instahelper.exe
 
 default: debug
 
-build: version deps
-	go get -u github.com/jteeuwen/go-bindata/...
-	go-bindata -nometadata -pkg="assets" -ignore=\\.DS_Store -prefix "assets" -o app/assets/assets.go assets/...
+build: version deps assets-release
 	rm -rf dist
 	mkdir -p dist
 
@@ -51,7 +49,7 @@ test: deps assets
 	go test -v ./app/...
 
 deps:
-	go get -u github.com/golang/dep/cmd/dep
+	go get github.com/golang/dep/cmd/dep
 	dep ensure
 
 version:
@@ -61,7 +59,7 @@ endif
 	go run app/update/gen_version.go $(v)
 
 assets-release:
-	go get -u github.com/jteeuwen/go-bindata/...
+	go get github.com/jteeuwen/go-bindata/...
 	go-bindata -nometadata -pkg="assets" -ignore=\\.DS_Store -prefix "assets" -o app/assets/assets.go assets/...
 
 assets:
