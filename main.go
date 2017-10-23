@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/goji/httpauth"
 
 	"github.com/skratchdot/open-golang/open"
 
@@ -16,12 +17,16 @@ import (
 
 	"github.com/socialplanner/instahelper/app/config"
 	"github.com/socialplanner/instahelper/app/handlers"
+	"github.com/socialplanner/instahelper/app/insta"
 	"github.com/socialplanner/instahelper/app/notifications"
 )
 
 func main() {
 	port := flag.Int("port", 3333, "Port to run Instahelper on")
 	debug := flag.Bool("debug", false, "Run in debug mode")
+	username := flag.String("user", "", "Username for instahelper")
+	password := flag.String("pass", "", "Password for instahelper")
+	auth := flag.Bool("auth", false, "Run using http basic auth")
 
 	flag.Parse()
 
@@ -36,8 +41,31 @@ func main() {
 
 	defer config.Close()
 
+	c, err := config.Config()
+
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
 	r := chi.NewRouter()
 
+	// They passed in a command line argument to use basic auth
+	if || *auth || *password != "" || *username != "" {
+		if *password == "" {
+			pass, err := insta.Decrypt(c.Password)
+			if err != nil {
+				logrus.Fatal(err)
+			}
+
+			password = &pass
+		}
+
+		if *username == "" {
+			*username = c.Username
+		}
+
+		r.Use(httpauth.SimpleBasicAuth(*username, *password))
+	}
 	// MIDDLEWARE
 	// gzip compress
 	r.Use(middleware.DefaultCompress)
@@ -90,13 +118,6 @@ func main() {
 	// Websocket handler
 	go notifications.Hub.Start()
 	r.Get("/ws", notifications.WSHandler)
-
-	//  Setup before listen
-	c, err := config.Config()
-
-	if err != nil {
-		logrus.Fatal(err)
-	}
 
 	// Use config if no port passed
 	if *port == 3333 {
