@@ -50,7 +50,7 @@ func main() {
 	r := chi.NewRouter()
 
 	// They passed in a command line argument to use basic auth
-	if || *auth || *password != "" || *username != "" {
+	if *auth || *password != "" || *username != "" {
 		if *password == "" {
 			pass, err := insta.Decrypt(c.Password)
 			if err != nil {
