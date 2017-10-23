@@ -9,12 +9,12 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/goji/httpauth"
 
 	"github.com/skratchdot/open-golang/open"
 
 	"github.com/sirupsen/logrus"
 
+	"github.com/socialplanner/instahelper/app/auth"
 	"github.com/socialplanner/instahelper/app/config"
 	"github.com/socialplanner/instahelper/app/handlers"
 	"github.com/socialplanner/instahelper/app/insta"
@@ -26,7 +26,7 @@ func main() {
 	debug := flag.Bool("debug", false, "Run in debug mode")
 	username := flag.String("user", "", "Username for instahelper")
 	password := flag.String("pass", "", "Password for instahelper")
-	auth := flag.Bool("auth", false, "Run using http basic auth")
+	useAuth := flag.Bool("auth", false, "Run using http basic auth")
 
 	flag.Parse()
 
@@ -50,7 +50,7 @@ func main() {
 	r := chi.NewRouter()
 
 	// They passed in a command line argument to use basic auth
-	if *auth || *password != "" || *username != "" {
+	if *useAuth || *password != "" || *username != "" {
 		if *password == "" {
 			pass, err := insta.Decrypt(c.Password)
 			if err != nil {
@@ -63,8 +63,8 @@ func main() {
 		if *username == "" {
 			*username = c.Username
 		}
-
-		r.Use(httpauth.SimpleBasicAuth(*username, *password))
+		logrus.Info("Using authentication")
+		r.Use(auth.SimpleBasicAuth(*username, *password))
 	}
 	// MIDDLEWARE
 	// gzip compress
@@ -78,14 +78,17 @@ func main() {
 	// redirect "/url/" to "/url"
 	r.Use(middleware.RedirectSlashes)
 
-	if *debug {
-		r.Use(middleware.Logger)
-	}
-
 	// ROUTES
 	// Pages
-	for _, p := range handlers.Pages {
-		r.Get(p.Link, p.Handler)
+
+	if *debug {
+		for _, p := range handlers.Pages {
+			r.With(middleware.Logger).Get(p.Link, p.Handler)
+		}
+	} else {
+		for _, p := range handlers.Pages {
+			r.Get(p.Link, p.Handler)
+		}
 	}
 
 	// Assets

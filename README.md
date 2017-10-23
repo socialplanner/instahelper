@@ -1,7 +1,7 @@
 # Instahelper - PreAlpha
 Self Hosted Web Based Instagram Automation Tool
 
-[![GoDoc](https://godoc.org/github.com/socialplanner/instahelper?status.svg)](https://godoc.org/github.com/socialplanner/instahelper) [![Version](https://img.shields.io/badge/version-0.0.1-green.svg)](#development-status) 
+[![GoDoc](https://godoc.org/github.com/socialplanner/instahelper?status.svg)](https://godoc.org/github.com/socialplanner/instahelper) [![Version](https://img.shields.io/badge/version-0.0.5-green.svg)](#development-status) 
 [![Travis](https://img.shields.io/travis/socialplanner/instahelper.svg?style=flat)](https://travis-ci.org/socialplanner/instahelper) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/socialplanner/instahelper)](https://goreportcard.com/report/github.com/socialplanner/instahelper)
 
