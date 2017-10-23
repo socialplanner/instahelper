@@ -79,17 +79,6 @@ func ToLatest(version string) (*Asset, error) {
 // Will return error if ver not found
 // Update is allowed to update to a lower version
 func To(ver string) (*Asset, error) {
-	semver1, err := semver.NewVersion(strings.Replace(
-		ver,
-		"v",
-		"",
-		-1,
-	))
-
-	if err != nil {
-		return nil, err
-	}
-
 	releases, err := ListReleases()
 
 	if err != nil {
@@ -97,18 +86,7 @@ func To(ver string) (*Asset, error) {
 	}
 
 	for _, r := range releases {
-		semver2, err := semver.NewVersion(strings.Replace(
-			r.Version,
-			"v",
-			"",
-			-1,
-		))
-
-		if err != nil {
-			continue
-		}
-
-		if semver1.Equal(*semver2) {
+		if ver == r.Version {
 			if asset := pickAsset(r.Assets); asset != nil {
 				err := download(asset.DownloadURL)
 				return asset, err
@@ -322,14 +300,20 @@ func unzip(src, dest string) error {
 
 // Release is a github release
 type Release struct {
-	Name        string `json:"name"`
-	Description string `json:"body"`
-	Version     string `json:"tag_name"`
-	URL         string `json:"url"`
-	ID          int    `json:"id"`
-	PreRelease  bool   `json:"prerelease"`
+	Name        string  `json:"name,omitempty"`
+	Description string  `json:"body,omitempty"`
+	Version     string  `json:"tag_name,omitempty"`
+	URL         string  `json:"url,omitempty"`
+	ID          int     `json:"id,omitempty"`
+	PreRelease  bool    `json:"prerelease,omitempty"`
+	PublishedAt string  `json:"published_at,omitempty"`
+	Assets      []Asset `json:"assets,omitempty"`
+	InfoURL     string  `json:"html_url,omitempty"`
+}
 
-	Assets []Asset `json:"assets"`
+// Semver will return a semver.Version from the release version
+func (r *Release) Semver() (*semver.Version, error) {
+	return semver.NewVersion(r.Version)
 }
 
 // Asset is a single download and it's various info for a github release

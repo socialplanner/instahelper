@@ -24,6 +24,7 @@ func main() {
 	debug := flag.Bool("debug", false, "Run in debug mode")
 
 	flag.Parse()
+
 	// To be removed on working prototype :)
 	fmt.Println("Rome wasn't built in a day.")
 

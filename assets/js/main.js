@@ -158,6 +158,42 @@ function getWebSocketURL() {
   return url;
 }
 
+$(".update-button").on("click", function() {
+  var button = $(this);
+  var version = button.attr("version");
+  var description = button.attr("description");
+  var url = "/api/update/to/" + version;
+
+  swal({
+    title: "Are you sure you want to update to {0}?".format(version),
+    html: "<b>Description: </b> description",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then(function() {
+    $.ajax({
+      url: url,
+      type: "POST",
+      success: function(d) {
+        showNotification(
+          "Awesome! Updated to " +
+            version +
+            "! All you need to do is restart the current running app.",
+          "top",
+          "left",
+          "success"
+        );
+      },
+
+      error: function(d) {
+        showNotification("Error: " + d.responseText, "top", "left", "danger");
+      }
+    });
+  });
+});
+
 $(".delete-account").on("click", function() {
   var button = $(this);
   var username = button.attr("username");

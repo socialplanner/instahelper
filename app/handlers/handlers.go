@@ -54,6 +54,15 @@ func init() {
 			Unlisted: true,
 			Handler:  SettingsHandler,
 		},
+
+		"update": {
+			ID:       5,
+			Name:     "Update",
+			Link:     "/update",
+			Icon:     "get_app",
+			Template: newTemplate("base.html", "update.html"),
+			Handler:  UpdateHandler,
+		},
 	}
 }
 
@@ -138,6 +147,7 @@ func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // Error will display the error and promt the user to report it
+// Do not use this for api endpoints. Only for user facing pages.
 func Error(w http.ResponseWriter, e error) {
 	w.Write([]byte(
 		fmt.Sprintf("Error: %s\nIt would be appreciated if you could create an issue at https://github.com/socialplanner/instahelper/issues/new", e.Error()),

@@ -47,6 +47,9 @@ func Open() error {
 		createConfig()
 	}
 
+	// Refresh the cache
+	DB.Drop("cache")
+
 	return nil
 }
 

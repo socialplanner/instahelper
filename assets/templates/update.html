@@ -1,0 +1,50 @@
+{{define "content"}}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-plain">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Update</h4>
+                <p class="category">You can update to a specific version by clicking the respective button.</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Version</th>
+                        <th>Name</th>
+                        <th>Published At</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        {{range .Releases}}
+                        <tr>
+                            <td>{{.Version}}</td>
+                            <td>{{.Name}}</td>
+                            <td>{{.PublishedAt}}</td>
+                            <td>
+                                {{if .PreRelease}}
+                                <b>PRERELEASE:</b>
+                                <br> {{end}} {{.Description}}
+                            </td>
+                            <td class="td-actions text-right">
+                                <a href="{{.InfoURL}}">
+                                    <button type="button" rel="tooltip" class="btn btn-info" data-original-title="" title="">
+                                        <i class="material-icons">info</i>
+                                        <div class="ripple-container"></div>
+                                    </button>
+                                </a>
+                                <button description="{{.Description}}" version="{{.Version}}" type="button" rel="tooltip" class="btn btn-success update-button"
+                                    data-original-title="" title="">
+                                    <i class="material-icons">get_app</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                            </td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
