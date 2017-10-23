@@ -45,18 +45,27 @@ func init() {
 			Handler:  AccountsHandler,
 		},
 
-		"settings": {
+		"account": {
 			ID:       4,
-			Name:     "Settings",
+			Name:     "Account Settings",
 			Link:     "/accounts/{username}",
 			Icon:     "settings",
 			Template: newTemplate("base.html", "account.html"),
 			Unlisted: true,
+			Handler:  AccSettingsHandler,
+		},
+
+		"settings": {
+			ID:       5,
+			Name:     "Settings",
+			Link:     "/settings",
+			Icon:     "settings",
+			Template: newTemplate("base.html", "settings.html"),
 			Handler:  SettingsHandler,
 		},
 
 		"update": {
-			ID:       5,
+			ID:       6,
 			Name:     "Update",
 			Link:     "/update",
 			Icon:     "get_app",
@@ -66,32 +75,12 @@ func init() {
 	}
 }
 
-// // Handler returns the http.Handler for the corresponding page
-// func (p *Page) Handler() func(http.ResponseWriter, *http.Request) {
-// 	switch p.Name {
-// 	case "Dashboard":
-// 		return DashboardHandler
-// 	case "Add Account":
-// 		return RegisterHandler
-// 	case "Accounts":
-// 		return AccountsHandler
-// 	case "Settings":
-// 		return SettingsHandler
-// 	}
-
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		w.WriteHeader(http.StatusNotFound)
-// 		http.Redirect(w, r, "/", http.StatusPermanentRedirect)
-// 	}
-// }
-
 // DashboardHandler is the handler for the main dashboard of Instahelper
 func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 	err := Template("dashboard").Execute(w)
 
 	if err != nil {
 		logrus.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
 	}
 }
@@ -102,7 +91,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
 	}
 }
@@ -114,8 +102,8 @@ func AccountsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
+		return
 	}
 
 	err = Template("accounts").Execute(w, map[string]interface{}{
@@ -124,7 +112,6 @@ func AccountsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
 		Error(w, err)
 	}
 }
@@ -140,7 +127,8 @@ func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// asset not found
 		w.WriteHeader(http.StatusNotFound)
-		Error(w, err)
+		http.Error(w, "asset not found", http.StatusNotFound)
+		return
 	}
 
 	w.Write(b)
@@ -149,6 +137,7 @@ func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 // Error will display the error and promt the user to report it
 // Do not use this for api endpoints. Only for user facing pages.
 func Error(w http.ResponseWriter, e error) {
+	w.WriteHeader(http.StatusInternalServerError)
 	w.Write([]byte(
 		fmt.Sprintf("Error: %s\nIt would be appreciated if you could create an issue at https://github.com/socialplanner/instahelper/issues/new", e.Error()),
 	))

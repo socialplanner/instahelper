@@ -116,6 +116,9 @@ func main() {
 			r.Post("/", handlers.APIUpdateHandler)
 		})
 
+		r.Route("/settings", func(r chi.Router) {
+			r.Post("/edit", handlers.APISettingsEditHandler)
+		})
 	})
 
 	// Websocket handler

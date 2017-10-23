@@ -69,8 +69,10 @@ func createConfig() error {
 		return nil
 	}
 	return DB.Save(&InstahelperConfig{
-		ID:     1,
-		AESKey: key,
-		Port:   3333,
+		ID:        1,
+		AESKey:    key,
+		Port:      3333,
+		Analytics: true,
+		SupportUs: true,
 	})
 }

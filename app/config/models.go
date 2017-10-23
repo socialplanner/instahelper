@@ -7,6 +7,7 @@ import (
 // InstahelperConfig is information about the Instahelper package as a whole
 type InstahelperConfig struct {
 	// AESKey used to encrypt password and Account.CachedInsta
+	// Don't change
 	AESKey []byte
 
 	ID int `storm:"id"`
@@ -14,20 +15,17 @@ type InstahelperConfig struct {
 	// Port to run the application on - defaults to :3333
 	Port int
 
-	// Domain to run the application on if running on a server
-	Domain string
-
-	// Path to SSLKey used to run with https - Usually obtained by LetsEncrypt
-	SSLKey string
-
-	// Path to SSLCert used to run with https - Usually obtained by LetsEncrypt
-	SSLCert string
-
 	// Username for Instahelper
 	Username string
 
 	// Password for Instahelper
 	Password string
+
+	// Analytics enabled?
+	Analytics bool
+
+	// Support us?
+	SupportUs bool
 }
 
 // Account is an Instagram Account
@@ -81,6 +79,19 @@ type Notification struct {
 	ID   int    `storm:"id,increment" json:"id"`
 	Link string `json:"link"`
 	Text string `json:"text,omitempty"`
+}
+
+// USE SAVE OVER UPDATE
+// https://github.com/asdine/storm/issues/160
+
+// Update the model using the values provided - helper function
+func (m *InstahelperConfig) Update() error {
+	return DB.Save(m)
+}
+
+// Update the model using the values provided - helper function
+func (m *Account) Update() error {
+	return DB.Save(m)
 }
 
 // Models for boltdb

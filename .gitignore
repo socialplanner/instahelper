@@ -22,3 +22,5 @@ test
 dist/
 
 app/assets/assets.go
+
+tmp/

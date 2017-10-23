@@ -10,6 +10,10 @@ import (
 
 var funcs = template.FuncMap{
 	"notifications": notifications.GetNotifications,
+	// Google analytics enabled?
+	"analyticsEnabled": analyticsEnabled,
+	// Support us?
+	"supportUsEnabled": supportUsEnabled,
 }
 
 // Template will load the corresponding template with presets.
