@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/asdine/storm"
+
 	"github.com/sirupsen/logrus"
 
 	"github.com/go-chi/chi"
@@ -17,8 +19,20 @@ func AccSettingsHandler(w http.ResponseWriter, r *http.Request) {
 
 	username := chi.URLParam(r, "username")
 
+	var acc config.Account
+
+	if err := config.DB.One("Username", username, &acc); err != nil {
+		if err == storm.ErrNotFound {
+			http.NotFound(w, r)
+			return
+		}
+
+		Error(w, err)
+		return
+	}
+
 	err := p.Execute(w, map[string]interface{}{
-		"Username": username,
+		"Acc": acc,
 	})
 
 	if err != nil {

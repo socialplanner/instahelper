@@ -1,1 +1,129 @@
-{{define "content"}} {{.Username}} {{end}}
+{{define "content"}}
+<div class="row">
+    {{$url := (printf "https://instagram.com/%s" .Acc.Username)}}
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Edit Account Settings</h4>
+                <p class="category">Settings for
+                    <a href="{{$url}}">{{.Acc.Username}}</a>
+                </p>
+            </div>
+            <div class="card-content">
+                <form>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Company (disabled)</label>
+                                <input type="text" class="form-control" disabled="">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Username</label>
+                                <input type="text" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Email address</label>
+                                <input type="email" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Fist Name</label>
+                                <input type="text" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Last Name</label>
+                                <input type="text" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Adress</label>
+                                <input type="text" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">City</label>
+                                <input type="text" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Country</label>
+                                <input type="text" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating is-empty">
+                                <label class="control-label">Postal Code</label>
+                                <input type="text" class="form-control">
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>About Me</label>
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
+                                    <textarea class="form-control" rows="5"></textarea>
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="{{$url}}">
+                    <img class="img" src="{{.Acc.ProfilePic}}">
+                </a>
+            </div>
+            <div class="content">
+                <a href="{{$url}}">
+                    <h6 class="category text-gray">@{{.Acc.Username}}</h6>
+                </a>
+                <a href="{{$url}}">
+                    <h4 class="card-title">{{.Acc.FullName}}</h4>
+                </a>
+                <p class="card-content">
+                    {{.Acc.Bio}}
+                </p>
+                <svg style="display:none;" class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+                </svg>
+                <form name="accountSettings" method="post" action="/api/accounts/update/{{.Acc.Username}}">
+                    <button type="submit" class="btn btn-primary btn-round">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>{{end}}

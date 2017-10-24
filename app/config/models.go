@@ -27,19 +27,26 @@ type InstahelperConfig struct {
 
 // Account is an Instagram Account
 type Account struct {
-	ID int `storm:"id,increment" json:"id,omitempty"`
+	ID int `storm:"id,increment" json:"id"`
 
-	Username string `storm:"unique" json:"username,omitempty"`
+	Username string `storm:"unique" json:"username"`
 	Password string `json:"-"`
+
+	// INFO
+	FullName string `json:"full_name"`
+	Bio      string `json:"bio"`
+	// Profile pic url
+	ProfilePic string `json:"profile_pic"`
+	Private    bool   `json:"private"`
 
 	// Cached GoInsta object
 	CachedInsta []byte `json:"-"`
 
 	// Settings is not inline to be able to copy over settings between accounts
-	Settings *Settings `json:"settings,omitempty"`
+	Settings *Settings `json:"settings"`
 
 	// AddedAt is when the user added this account
-	AddedAt time.Time `storm:"index" json:"added_at,omitempty"`
+	AddedAt time.Time `storm:"index" json:"added_at"`
 }
 
 // Settings for a given account

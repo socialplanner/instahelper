@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/asdine/storm"
+
 	"github.com/go-chi/chi"
 	"github.com/socialplanner/instahelper/app/config"
 	"github.com/socialplanner/instahelper/app/insta"
@@ -40,26 +42,46 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ig, err := insta.CachedInsta(username, password, proxy)
+	ig, err := insta.Login(username, password, proxy)
 
 	if err != nil {
 		// Bad username/password combo or captcha
 		http.Error(w, err.Error(), http.StatusBadGateway)
 		return
 	}
+	b, err := insta.ExportCached(ig)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	u, err := ig.GetProfileData()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	user := u.User
 
 	err = config.DB.Save(&config.Account{
 		Username: username,
 		Password: passwordENC,
-		AddedAt:  time.Now(),
+
+		FullName:   user.FullName,
+		Bio:        user.Biography,
+		Private:    user.IsPrivate,
+		ProfilePic: user.HDProfilePicURLInfo.URL,
+
+		AddedAt: time.Now(),
 		Settings: &config.Settings{
 			Proxy: proxy,
 		},
-		CachedInsta: ig,
+		CachedInsta: b,
 	})
 
 	if err != nil {
-		if err.Error() == "already exists" {
+		if err == storm.ErrAlreadyExists {
 			http.Error(w, "An account with that username already exists.", http.StatusConflict)
 			return
 		}
@@ -96,10 +118,8 @@ func APIDeleteAccountHandler(w http.ResponseWriter, r *http.Request) {
 	username := chi.URLParam(r, "username") // /api/accounts/{username}
 	acc := &config.Account{}
 
-	err := config.DB.One("Username", username, acc)
-
-	if err != nil {
-		if err.Error() == "not found" {
+	if err := config.DB.One("Username", username, acc); err != nil {
+		if err == storm.ErrNotFound {
 			http.Error(w, "Account with the username not found", http.StatusNotFound)
 			return
 		}
@@ -108,7 +128,7 @@ func APIDeleteAccountHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = config.DB.DeleteStruct(acc)
+	err := config.DB.DeleteStruct(acc)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -116,4 +136,52 @@ func APIDeleteAccountHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte("Deleted " + username))
+}
+
+// APIUpdateAccountHandler is the http.Handler used to update an accounts info from the database
+func APIUpdateAccountHandler(w http.ResponseWriter, r *http.Request) {
+	username := chi.URLParam(r, "username")
+	acc := &config.Account{}
+
+	if err := config.DB.One("Username", username, acc); err != nil {
+		if err == storm.ErrNotFound {
+			http.Error(w, "Account with the username not found", http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	ig, err := insta.Import(acc.CachedInsta)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err = ig.Login(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	u, err := ig.GetProfileData()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	user := u.User
+
+	acc.Bio = user.Biography
+	acc.ProfilePic = user.HDProfilePicURLInfo.URL
+	acc.Private = user.IsPrivate
+	acc.FullName = user.FullName
+
+	if err := acc.Update(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write([]byte("Updated!"))
 }

@@ -25,6 +25,16 @@ func CachedInsta(username, password, proxy string) ([]byte, error) {
 	return ig.Export(c.AESKey)
 }
 
+// ExportCached will export the cached instagram object using the configs AESKey.
+func ExportCached(ig *goinsta.Instagram) ([]byte, error) {
+	c, err := config.Config()
+
+	if err != nil {
+		return []byte{}, err
+	}
+	return ig.Export(c.AESKey)
+}
+
 // Login will connect to Instagram through a proxy if one is passed
 func Login(username, password, proxy string) (*goinsta.Instagram, error) {
 	var ig *goinsta.Instagram
@@ -43,4 +53,15 @@ func Login(username, password, proxy string) (*goinsta.Instagram, error) {
 	}
 
 	return ig, nil
+}
+
+// Import an account from it's cached bytes
+func Import(b []byte) (*goinsta.Instagram, error) {
+	c, err := config.Config()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return goinsta.Import(b, c.AESKey)
 }
