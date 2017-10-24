@@ -52,7 +52,6 @@ func APISettingsEditHandler(w http.ResponseWriter, r *http.Request) {
 	password := r.PostFormValue("password")
 	portStr := r.PostFormValue("port")
 	analytics := r.PostFormValue("analytics") == "on"
-	supportUs := r.PostFormValue("supportUs") == "on"
 
 	c, err := config.Config()
 
@@ -84,7 +83,6 @@ func APISettingsEditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	c.Analytics = analytics
-	c.SupportUs = supportUs
 
 	if err := c.Update(); err != nil {
 		logrus.Error(err)

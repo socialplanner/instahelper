@@ -73,6 +73,5 @@ func createConfig() error {
 		AESKey:    key,
 		Port:      3333,
 		Analytics: true,
-		SupportUs: true,
 	})
 }

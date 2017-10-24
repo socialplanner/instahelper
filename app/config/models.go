@@ -23,9 +23,6 @@ type InstahelperConfig struct {
 
 	// Analytics enabled?
 	Analytics bool
-
-	// Support us?
-	SupportUs bool
 }
 
 // Account is an Instagram Account
