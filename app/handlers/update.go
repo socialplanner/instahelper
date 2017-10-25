@@ -19,11 +19,13 @@ func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r := config.Get("releases"); r == nil {
 		releases, err = update.ListReleases()
+		config.Set("releases", releases, 30*time.Minute)
 	} else {
 		if rel, ok := r.([]update.Release); ok {
 			releases = rel
 		} else {
 			releases, err = update.ListReleases()
+			config.Set("releases", releases, 30*time.Minute)
 		}
 	}
 

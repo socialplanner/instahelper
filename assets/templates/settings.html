@@ -10,27 +10,19 @@
                 <form name="changeSettings" action="/api/settings/edit" method="post">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group label-floating is-empty">
-                                <label class="control-label">Username {{ if gt (len .C.Username) 0 }} ({{.C.Username}}){{end}}
-                                </label>
-                                <input name="username" type="text" class="form-control">
+                            <div class="form-group label-floating {{if eq (len .C.Username) 0}}is-empty{{end}}">
+                                <label class="control-label">Username</label>
+                                <input value="{{.C.Username}}" name="username" type="text" class="form-control">
                                 <span class="material-input"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group label-floating is-empty">
-                                <label class="control-label">Password{{ if eq (len .C.Password) 0 }} (No Password Set){{end}}</label>
-                                <input name="password" type="password" class="form-control">
-                                <span class="material-input"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group label-floating is-empty">
-                                <label class="control-label">Port ({{.C.Port}})
+                                <!-- FIX ME - TODO-->
+                                <label class="control-label">Password{{ if eq (len .C.Password) 0 }} (No Password Set) {{else}} (Type none for no password)
+                                    {{end}}
                                 </label>
-                                <input name="port" type="number" class="form-control">
+                                <input name="password" type="password" class="form-control">
                                 <span class="material-input"></span>
                             </div>
                         </div>

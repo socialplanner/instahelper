@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/asdine/storm"
 
@@ -13,7 +12,7 @@ import (
 )
 
 // AccSettingsHandler is the handler for the page to change account settings
-// TODO
+// WIP
 func AccSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	p := Template("account")
 
@@ -64,7 +63,6 @@ func SettingsHandler(w http.ResponseWriter, r *http.Request) {
 func APISettingsEditHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
-	portStr := r.PostFormValue("port")
 	analytics := r.PostFormValue("analytics") == "on"
 
 	c, err := config.Config()
@@ -75,27 +73,14 @@ func APISettingsEditHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if portStr != "" {
-		port, err := strconv.Atoi(portStr)
+	c.Username = username
 
-		if err != nil {
-			logrus.Error(err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		c.Port = port
-	}
-
-	// If arg isn't the zero value. Replace the config with it.
-	switch {
-	case username != "":
-		c.Username = username
-		fallthrough
-	case password != "":
+	// Type none for no password
+	if password != "none" {
 		c.Password = password
+	} else {
+		c.Password = ""
 	}
-
 	c.Analytics = analytics
 
 	if err := c.Update(); err != nil {

@@ -12,40 +12,17 @@
             <div class="card-content">
                 <form>
                     <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group label-floating is-empty">
-                                <label class="control-label">Company (disabled)</label>
-                                <input type="text" class="form-control" disabled="">
-                                <span class="material-input"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group label-floating is-empty">
+                        <div class="col-md-6">
+                            <div class="form-group label-floating">
                                 <label class="control-label">Username</label>
-                                <input type="text" class="form-control">
-                                <span class="material-input"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group label-floating is-empty">
-                                <label class="control-label">Email address</label>
-                                <input type="email" class="form-control">
-                                <span class="material-input"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group label-floating is-empty">
-                                <label class="control-label">Fist Name</label>
-                                <input type="text" class="form-control">
+                                <input autocapitalize="off" autocorrect="off" maxlength="30" name="username" value="{{.Acc.Username}}" type="text" class="form-control">
                                 <span class="material-input"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group label-floating is-empty">
-                                <label class="control-label">Last Name</label>
-                                <input type="text" class="form-control">
+                                <label class="control-label">Password</label>
+                                <input type="password" class="form-control">
                                 <span class="material-input"></span>
                             </div>
                         </div>
@@ -69,7 +46,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group label-floating is-empty">
-                                <label class="control-label">Country</label>
+                                <label class="control-label">Proxy</label>
                                 <input type="text" class="form-control">
                                 <span class="material-input"></span>
                             </div>
@@ -112,7 +89,7 @@
                     <h6 class="category text-gray">@{{.Acc.Username}}</h6>
                 </a>
                 <a href="{{$url}}">
-                    <h4 class="card-title">{{.Acc.FullName}}</h4>
+                    <h4 class="card-title">{{.Acc.FullName}} {{if .Acc.Private}}| 🕵️{{end}}</h4>
                 </a>
                 <p class="card-content">
                     {{.Acc.Bio}}

@@ -15,8 +15,6 @@ import (
 
 // APICreateAccountHandler is a http.Handler which should be used to save an account to db.
 func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
-	// TODO, check if is a valid account/needs to break captcha.
-	// TODO encrypt
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
 	proxy := r.PostFormValue("proxy")
@@ -153,14 +151,9 @@ func APIUpdateAccountHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ig, err := insta.Import(acc.CachedInsta)
+	ig, err := insta.Acc(username)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if err = ig.Login(); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

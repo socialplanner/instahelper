@@ -166,12 +166,12 @@ $(".update-button").on("click", function() {
 
   swal({
     title: "Are you sure you want to update to {0}?".format(version),
-    html: "<b>Description: </b> description",
+    html: "<b>Description: </b> " + description,
     type: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
+    confirmButtonText: "Yes, upgrade!"
   }).then(function() {
     $.ajax({
       url: url,

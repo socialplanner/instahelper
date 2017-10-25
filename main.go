@@ -126,11 +126,6 @@ func main() {
 	go notifications.Hub.Start()
 	r.Get("/ws", notifications.WSHandler)
 
-	// Use config if no port passed
-	if *port == 3333 {
-		*port = c.Port
-	}
-
 	go func() {
 		time.Sleep(time.Second)
 		ip, err := localIP()

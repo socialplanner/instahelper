@@ -12,9 +12,6 @@ type InstahelperConfig struct {
 
 	ID int `storm:"id"`
 
-	// Port to run the application on - defaults to :3333
-	Port int
-
 	// Username for Instahelper
 	Username string
 
