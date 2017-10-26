@@ -27,54 +27,54 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="profile">
                         <form action="/api/accounts/settings/{{.Acc.Username}}" method="post">
-                            <div class=" row ">
-                                <div class="col-md-6 ">
-                                    <div class="form-group label-floating ">
-                                        <label class="control-label ">Username</label>
-                                        <input autocapitalize="off " autocorrect="off " maxlength="30 " name="username" value="{{.Acc.Username}} " type="text " class="form-control ">
-                                        <span class="material-input "></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Username</label>
+                                        <input autocapitalize="off" autocorrect="off" maxlength="30" name="username" value="{{.Acc.Username}}" type="text" class="form-control">
+                                        <span class="material-input"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-6 ">
-                                    <div class="form-group label-floating {{if eq (len .Acc.FullName) 0}}is-empty{{end}} ">
-                                        <label class="control-label ">Full Name</label>
-                                        <input name="fullName" value="{{.Acc.FullName}} " type="text " class="form-control ">
-                                        <span class="material-input "></span>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating {{if eq (len .Acc.FullName) 0}}is-empty{{end}}">
+                                        <label class="control-label">Full Name</label>
+                                        <input name="fullName" value="{{.Acc.FullName}}" type="text" class="form-control">
+                                        <span class="material-input"></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row ">
-                                <div class="col-md-12 ">
-                                    <div class="form-group label-floating is-empty ">
-                                        <label class="control-label ">Password (This does not change your Instagram password, only what Instahelper thinks
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Password (This does not change your Instagram password, only what Instahelper thinks
                                             it is)</label>
-                                        <input name="password" type="password " class="form-control ">
-                                        <span class="material-input "></span>
+                                        <input name="password" type="password" class="form-control">
+                                        <span class="material-input"></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row ">
-                                <div class="col-md-6 ">
-                                    <div class="form-group label-floating {{if eq (len .Acc.Settings.Proxy) 0}}is-empty{{end}} ">
-                                        <label class="control-label ">Proxy</label>
-                                        <input name="proxy" value="{{.Acc.Settings.Proxy}} " type="text " class="form-control ">
-                                        <span class="material-input "></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating {{if eq (len .Acc.Settings.Proxy) 0}}is-empty{{end}}">
+                                        <label class="control-label">Proxy</label>
+                                        <input name="proxy" value="{{.Acc.Settings.Proxy}}" type="text" class="form-control">
+                                        <span class="material-input"></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row ">
-                                <div class="col-md-12 ">
-                                    <div class="form-group ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <label>Biography</label>
-                                        <div class="form-group label-floating {{if eq (len .Acc.Bio) 0}}is-empty{{end}} ">
-                                            <label class="control-label "></label>
-                                            <textarea name="biography" class="form-control " rows="5 ">{{.Acc.Bio}}</textarea>
-                                            <span class="material-input "></span>
+                                        <div class="form-group label-floating {{if eq (len .Acc.Bio) 0}}is-empty{{end}}">
+                                            <label class="control-label"></label>
+                                            <textarea name="biography" class="form-control" rows="5">{{.Acc.Bio}}</textarea>
+                                            <span class="material-input"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit " class="btn btn-primary pull-right ">Update Settings</button>
+                            <button type="submit" class="btn btn-primary pull-right">Update Settings</button>
                             <div class="clearfix "></div>
                         </form>
                     </div>
@@ -144,30 +144,30 @@
         </div>
     </div>
     <div class="col-md-4 text-center">
-        <div class="card card-profile ">
-            <div class="card-avatar ">
-                <a href="{{$url}} ">
-                    <img class="img " src="{{.Acc.ProfilePic}} ">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="{{$url}}">
+                    <img class="img" src="{{.Acc.ProfilePic}}">
                 </a>
             </div>
-            <div class="content ">
-                <a href="{{$url}} ">
-                    <h6 class="category text-gray ">@{{.Acc.Username}}</h6>
+            <div class="content">
+                <a href="{{$url}}">
+                    <h6 class="category text-gray">@{{.Acc.Username}}</h6>
                 </a>
-                <a href="{{$url}} ">
-                    <h4 class="card-title ">{{.Acc.FullName}} {{if .Acc.Private}}| 🕵️{{end}}</h4>
+                <a href="{{$url}}">
+                    <h4 class="card-title">{{.Acc.FullName}} {{if .Acc.Private}}| 🕵️{{end}}</h4>
                 </a>
-                <p class="card-content ">
+                <p class="card-content">
                     {{.Acc.Bio}}
                     <br>
                     <br>
-                    <i>Last Update: {{.Acc.LastUpdate.Format "Mon Jan 2, 3:04 PM "}}</i>
+                    <i>Last Update: {{.Acc.LastUpdate.Format "Mon Jan 2, 3:04 PM"}}</i>
                 </p>
-                <svg style="display:none; " class="spinner " width="65px " height="65px " viewBox="0 0 66 66 " xmlns="http://www.w3.org/2000/svg ">
-                    <circle class="path " fill="none " stroke-width="6 " stroke-linecap="round " cx="33 " cy="33 " r="30 "></circle>
+                <svg style="display:none;" class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path " fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
                 </svg>
-                <form name="accountSettings " method="post " action="/api/accounts/update/{{.Acc.Username}}">
-                    <button type="submit " class="btn btn-primary btn-round ">Update Information</button>
+                <form name="accountSettings" method="post" action="/api/accounts/update/{{.Acc.Username}}">
+                    <button type="submit" class="btn btn-primary btn-round">Update Information</button>
                 </form>
             </div>
         </div>

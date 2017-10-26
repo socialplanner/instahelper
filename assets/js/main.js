@@ -16,7 +16,7 @@ $(function() {
     var button = $(this).find("button");
     button.prop("disabled", true);
 
-    if (method.toLowerCase() == "get") {
+    if (method.toLowerCase().startsWith("get")) {
       $(".spinner").show();
       $.get(url, data, function(d) {
         $(".spinner").hide();
@@ -27,7 +27,7 @@ $(function() {
       }).fail(function() {
         $(".spinner").hide();
       });
-    } else if (method.toLowerCase() == "post") {
+    } else if (method.toLowerCase().startsWith("post")) {
       $(".spinner").show();
       $.post(url, data, function(d) {
         $(".spinner").hide();
