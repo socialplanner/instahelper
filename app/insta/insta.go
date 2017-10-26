@@ -2,7 +2,10 @@
 package insta
 
 import (
+	"time"
+
 	"github.com/ahmdrz/goinsta"
+	"github.com/ahmdrz/goinsta/response"
 	"github.com/ahmdrz/goinsta/store"
 	"github.com/socialplanner/instahelper/app/config"
 )
@@ -60,14 +63,19 @@ func Acc(name string) (*goinsta.Instagram, error) {
 		}
 	}
 
-	// We are using a request that should pass under most circumstances, to check
-	// if the account is still logged in. The password could've changed between now and then, or any number of things.
-	p, err := ig.GetProfileData()
+	var p response.ProfileDataResponse
+	// Only call at the most every 5 minutes.
+	if time.Now().Sub(acc.LastAccess).Minutes() > 5 {
+		// We are using a request that should pass under most circumstances, to check
+		// if the account is still logged in. The password could've changed between now and then, or any number of things.
+		p, err = ig.GetProfileData()
 
-	if err != nil {
-		if err := ig.Login(); err != nil {
-			return nil, err
+		if err != nil {
+			if err := ig.Login(); err != nil {
+				return nil, err
+			}
 		}
+
 	}
 
 	user := p.User

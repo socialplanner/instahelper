@@ -71,7 +71,10 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 		Private:    user.IsPrivate,
 		ProfilePic: user.HDProfilePicURLInfo.URL,
 
-		AddedAt: time.Now(),
+		AddedAt:    time.Now(),
+		LastUpdate: time.Now(),
+		LastAccess: time.Now(),
+
 		Settings: &config.Settings{
 			Proxy: proxy,
 		},
@@ -170,6 +173,7 @@ func APIUpdateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	acc.ProfilePic = user.HDProfilePicURLInfo.URL
 	acc.Private = user.IsPrivate
 	acc.FullName = user.FullName
+	acc.LastUpdate = time.Now()
 
 	if err := acc.Update(); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

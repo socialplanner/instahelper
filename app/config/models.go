@@ -29,18 +29,26 @@ type Account struct {
 	Username string `storm:"unique" json:"username"`
 	Password string `json:"-"`
 
-	// INFO
+	// Vanity Info
 	FullName string `json:"full_name"`
 	Bio      string `json:"bio"`
-	// Profile pic url
+	// profile pic url
 	ProfilePic string `json:"profile_pic"`
-	Private    bool   `json:"private"`
+
+	Private bool `json:"private"`
+	// ---
 
 	// Cached GoInsta object
 	CachedInsta []byte `json:"-"`
 
 	// Settings is not inline to be able to copy over settings between accounts
 	Settings *Settings `json:"settings"`
+
+	// LastAccess is the last time the account was accessed using insta.Acc
+	LastAccess time.Time `json:"last_access"`
+
+	// LastUpdate is when the vanity info was last updated
+	LastUpdate time.Time `json:"last_update"`
 
 	// AddedAt is when the user added this account
 	AddedAt time.Time `storm:"index" json:"added_at"`
