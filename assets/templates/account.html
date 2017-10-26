@@ -2,68 +2,148 @@
 <div class="row">
     {{$url := (printf "https://instagram.com/%s" .Acc.Username)}}
     <div class="col-md-8">
-        <div class="card">
+        <div class="card card-nav-tabs">
             <div class="card-header" data-background-color="purple">
-                <h4 class="title">Edit Account Settings</h4>
-                <p class="category">Settings for
-                    <a href="{{$url}}">{{.Acc.Username}}</a>
-                </p>
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <ul class="nav nav-tabs" data-tabs="tabs">
+                            <li class="active">
+                                <a href="#profile" data-toggle="tab">
+                                    <i class="material-icons">account_box</i> Profile
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#jobs" data-toggle="tab">
+                                    <i class="material-icons">build</i> Jobs
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="card-content">
-                <form action="/api/accounts/settings/{{.Acc.Username}}" method="post">
-                    <div class=" row ">
-                        <div class="col-md-6 ">
-                            <div class="form-group label-floating ">
-                                <label class="control-label ">Username</label>
-                                <input autocapitalize="off " autocorrect="off " maxlength="30 " name="username" value="{{.Acc.Username}} " type="text " class="form-control ">
-                                <span class="material-input "></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ">
-                            <div class="form-group label-floating {{if eq (len .Acc.FullName) 0}}is-empty{{end}} ">
-                                <label class="control-label ">Full Name</label>
-                                <input name="fullName" value="{{.Acc.FullName}} " type="text " class="form-control ">
-                                <span class="material-input "></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ">
-                        <div class="col-md-12 ">
-                            <div class="form-group label-floating is-empty ">
-                                <label class="control-label ">Password (This does not change your Instagram password, only what Instahelper thinks it is)</label>
-                                <input name="password" type="password " class="form-control ">
-                                <span class="material-input "></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ">
-                        <div class="col-md-6 ">
-                            <div class="form-group label-floating {{if eq (len .Acc.Settings.Proxy) 0}}is-empty{{end}} ">
-                                <label class="control-label ">Proxy</label>
-                                <input name="proxy" value="{{.Acc.Settings.Proxy}} " type="text " class="form-control ">
-                                <span class="material-input "></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ">
-                        <div class="col-md-12 ">
-                            <div class="form-group ">
-                                <label>Biography</label>
-                                <div class="form-group label-floating {{if eq (len .Acc.Bio) 0}}is-empty{{end}} ">
-                                    <label class="control-label "></label>
-                                    <textarea name="biography" class="form-control " rows="5 ">{{.Acc.Bio}}</textarea>
-                                    <span class="material-input "></span>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="profile">
+                        <form action="/api/accounts/settings/{{.Acc.Username}}" method="post">
+                            <div class=" row ">
+                                <div class="col-md-6 ">
+                                    <div class="form-group label-floating ">
+                                        <label class="control-label ">Username</label>
+                                        <input autocapitalize="off " autocorrect="off " maxlength="30 " name="username" value="{{.Acc.Username}} " type="text " class="form-control ">
+                                        <span class="material-input "></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <div class="form-group label-floating {{if eq (len .Acc.FullName) 0}}is-empty{{end}} ">
+                                        <label class="control-label ">Full Name</label>
+                                        <input name="fullName" value="{{.Acc.FullName}} " type="text " class="form-control ">
+                                        <span class="material-input "></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="row ">
+                                <div class="col-md-12 ">
+                                    <div class="form-group label-floating is-empty ">
+                                        <label class="control-label ">Password (This does not change your Instagram password, only what Instahelper thinks
+                                            it is)</label>
+                                        <input name="password" type="password " class="form-control ">
+                                        <span class="material-input "></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-md-6 ">
+                                    <div class="form-group label-floating {{if eq (len .Acc.Settings.Proxy) 0}}is-empty{{end}} ">
+                                        <label class="control-label ">Proxy</label>
+                                        <input name="proxy" value="{{.Acc.Settings.Proxy}} " type="text " class="form-control ">
+                                        <span class="material-input "></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-md-12 ">
+                                    <div class="form-group ">
+                                        <label>Biography</label>
+                                        <div class="form-group label-floating {{if eq (len .Acc.Bio) 0}}is-empty{{end}} ">
+                                            <label class="control-label "></label>
+                                            <textarea name="biography" class="form-control " rows="5 ">{{.Acc.Bio}}</textarea>
+                                            <span class="material-input "></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit " class="btn btn-primary pull-right ">Update Settings</button>
+                            <div class="clearfix "></div>
+                        </form>
                     </div>
-                    <button type="submit " class="btn btn-primary pull-right ">Update Settings</button>
-                    <div class="clearfix "></div>
-                </form>
+                    <div class="tab-pane" id="jobs">
+                        <ul class="nav nav-pills nav-pills-rose">
+                            <li class="active">
+                                <a href="#pill1" data-toggle="tab">Follow</a>
+                            </li>
+                            <li>
+                                <a href="#pill2" data-toggle="tab">Unfollow</a>
+                            </li>
+                            <li>
+                                <a href="#pill3" data-toggle="tab">Targetting</a>
+                            </li>
+                        </ul>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="optionsCheckboxes" checked="">
+                                                <span class="checkbox-material">
+                                                    <span class="check"></span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain
+                                        swept through metro Detroit
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs" data-original-title="Edit Task">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Remove">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="optionsCheckboxes">
+                                                <span class="checkbox-material">
+                                                    <span class="check"></span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
+                                    <td class="td-actions text-right">
+                                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs" data-original-title="Edit Task">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Remove">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 ">
+    <div class="col-md-4 text-center">
         <div class="card card-profile ">
             <div class="card-avatar ">
                 <a href="{{$url}} ">
@@ -86,10 +166,15 @@
                 <svg style="display:none; " class="spinner " width="65px " height="65px " viewBox="0 0 66 66 " xmlns="http://www.w3.org/2000/svg ">
                     <circle class="path " fill="none " stroke-width="6 " stroke-linecap="round " cx="33 " cy="33 " r="30 "></circle>
                 </svg>
-                <form name="accountSettings " method="post " action="/api/accounts/update/{{.Acc.Username}} ">
+                <form name="accountSettings " method="post " action="/api/accounts/update/{{.Acc.Username}}">
                     <button type="submit " class="btn btn-primary btn-round ">Update Information</button>
                 </form>
             </div>
         </div>
+        <button username="{{.Acc.Username}}" type="button" rel="tooltip" class="btn btn-danger delete-account" data-original-title=""
+            title="">
+            <i class="material-icons">close</i>
+            Delete Account
+        </button>
     </div>
 </div>{{end}}

@@ -14,5 +14,5 @@ func APIAccSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	bio := r.PostFormValue("biography")
 
 	fmt.Println(username, fullName, password, proxy, bio)
-	w.Write("I'm useless so far!"))
+	w.Write([]byte("I'm useless so far!"))
 }
