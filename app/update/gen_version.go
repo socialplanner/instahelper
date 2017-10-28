@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/coreos/go-semver/semver"
+	"github.com/Masterminds/semver"
 )
 
 var tmpl = `package update
@@ -22,9 +22,9 @@ func main() {
 
 	out := fmt.Sprintf(tmpl, os.Args[1])
 
-	// Check if version is semver
+	// Check if version is proper semver
 	if os.Args[1] != "nightly" {
-		semver.New(os.Args[1])
+		semver.MustParse(os.Args[1])
 	}
 
 	err := ioutil.WriteFile(path, []byte(out), 0644)

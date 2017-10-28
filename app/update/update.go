@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/coreos/go-semver/semver"
+	"github.com/Masterminds/semver"
 	"github.com/sirupsen/logrus"
 )
 
@@ -64,7 +64,7 @@ func ToLatest(version string) (*Asset, error) {
 			continue
 		}
 
-		if !ver.LessThan(*currentVer) {
+		if !ver.LessThan(currentVer) {
 			if asset := pickAsset(r.Assets); asset != nil {
 				err := download(asset.DownloadURL)
 				return asset, err

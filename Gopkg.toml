@@ -26,8 +26,8 @@
   version = "1.0.3"
 
 [[constraint]]
-  name = "github.com/blang/semver"
-  version = "3.5.1"
+  name = "github.com/Masterminds/semver"
+  version = "1.4.0"
 
 [[constraint]]
   name = "github.com/asdine/storm"
