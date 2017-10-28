@@ -1,4 +1,4 @@
 package update
 
 // VERSION of instahelper
-var VERSION = "nightly"
+var VERSION = "v0.6.0"

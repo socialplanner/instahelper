@@ -39,6 +39,12 @@ build: version deps assets-release
 # Creates a zip archive of each folder
 	@$(foreach bit,$(BITS),$(foreach os,  $(GOOSES), zip -rj dist/instahelper-$(v)-$(os)-$(bit).zip dist/instahelper-$(v)-$(os)-$(bit);))
 
+# Remove 32 bit MacOS, all are 64 bit anyways
+	rm dist/instahelper-$(v)-darwin-32.zip
+
+# Renames darwin > macos
+	mv dist/instahelper-$(v)-darwin-64.zip dist/instahelper-$(v)-macos-64.zip
+
 # Deletes the original folders
 	@$(foreach bit,$(BITS),$(foreach os,  $(GOOSES), rm -rf dist/instahelper-$(v)-$(os)-$(bit);))
 

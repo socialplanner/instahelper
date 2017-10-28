@@ -24,3 +24,5 @@ dist/
 app/assets/assets.go
 
 tmp/
+
+app/update/version.go
