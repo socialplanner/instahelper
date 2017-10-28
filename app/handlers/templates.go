@@ -12,6 +12,8 @@ var funcs = template.FuncMap{
 	"notifications": notifications.GetNotifications,
 	// Google analytics enabled?
 	"analyticsEnabled": analyticsEnabled,
+
+	"updatesEnabled": updatesEnabled,
 }
 
 // Template will load the corresponding template with presets.

@@ -149,7 +149,7 @@ func download(url string) error {
 
 	dir := filepath.Dir(path)
 
-	// Downloads file to dir/temp.zip
+	// Downloads file to dir/tmp-instahelper/temp.zip
 	zipFile := filepath.Join(dir, "temp.zip")
 
 	f, err := os.Create(zipFile)
@@ -159,7 +159,7 @@ func download(url string) error {
 	}
 
 	defer f.Close()
-	defer os.RemoveAll(filepath.Join(dir, "tmp"))
+	defer os.RemoveAll(filepath.Join(dir, "tmp-instahelper"))
 
 	_, err = io.Copy(f, resp.Body)
 
@@ -168,7 +168,7 @@ func download(url string) error {
 	}
 
 	// unzip and deletes the file
-	err = unzip(zipFile, filepath.Join(dir, "tmp"))
+	err = unzip(zipFile, filepath.Join(dir, "tmp-instahelper"))
 
 	if err != nil {
 		return err
@@ -192,7 +192,7 @@ func download(url string) error {
 
 	// Open file to the new executable
 	// Uses name to account for .exe vs no suffix
-	f, err = os.Open(filepath.Join(dir, "tmp", name))
+	f, err = os.Open(filepath.Join(dir, "tmp-instahelper", name))
 
 	if err != nil {
 		return err

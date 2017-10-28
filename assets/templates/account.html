@@ -8,14 +8,14 @@
                     <div class="nav-tabs-wrapper">
                         <ul class="nav nav-tabs" data-tabs="tabs">
                             <li class="active">
-                                <a href="#profile" data-toggle="tab">
-                                    <i class="material-icons">account_box</i> Profile
+                                <a href="#jobs" data-toggle="tab">
+                                    <i class="material-icons">build</i> Jobs
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="#jobs" data-toggle="tab">
-                                    <i class="material-icons">build</i> Jobs
+                                <a href="#profile" data-toggle="tab">
+                                    <i class="material-icons">account_box</i> Profile
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
@@ -25,7 +25,37 @@
             </div>
             <div class="card-content">
                 <div class="tab-content">
-                    <div class="tab-pane active" id="profile">
+                    <div class="tab-pane active" id="jobs">
+                        <div class="card-content">
+                            <ul class="nav nav-pills nav-pills-warning">
+                                <li class="active">
+                                    <a href="#follow" data-toggle="tab" aria-expanded="true">Follow</a>
+                                </li>
+                                <li class="">
+                                    <a href="#unfollow" data-toggle="tab" aria-expanded="false">Unfollow</a>
+                                </li>
+                                <li class="">
+                                    <a href="#sources" data-toggle="tab" aria-expanded="false">Sources</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="follow">
+                                    {{template "follow"}}
+                                </div>
+                                <div class="tab-pane" id="unfollow">
+                                    {{template "unfollow"}}
+                                </div>
+                                <div class="tab-pane" id="sources">
+                                    {{template "sources"}}
+                                </div>
+                            </div>
+
+                            <!-- Submit all forms -->
+                            <button url="/api/accounts/settings/{{.Acc.Username}}" id="jobs-submit" class="btn btn-primary pull-right">Update Settings</button>
+                            <div class="clearfix "></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="profile">
                         <form action="/api/accounts/settings/{{.Acc.Username}}" method="post">
                             <div class="row">
                                 <div class="col-md-6">
@@ -55,9 +85,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group label-floating {{if eq (len .Acc.Settings.Proxy) 0}}is-empty{{end}}">
+                                    <div class="form-group label-floating {{if eq (len .Acc.Proxy) 0}}is-empty{{end}}">
                                         <label class="control-label">Proxy</label>
-                                        <input name="proxy" value="{{.Acc.Settings.Proxy}}" type="text" class="form-control">
+                                        <input name="proxy" value="{{.Acc.Proxy}}" type="text" class="form-control">
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -74,70 +104,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary pull-right">Update Settings</button>
+                            <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
                             <div class="clearfix "></div>
                         </form>
-                    </div>
-                    <div class="tab-pane" id="jobs">
-                        <ul class="nav nav-pills nav-pills-rose">
-                            <li class="active">
-                                <a href="#pill1" data-toggle="tab">Follow</a>
-                            </li>
-                            <li>
-                                <a href="#pill2" data-toggle="tab">Unfollow</a>
-                            </li>
-                            <li>
-                                <a href="#pill3" data-toggle="tab">Targetting</a>
-                            </li>
-                        </ul>
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="optionsCheckboxes" checked="">
-                                                <span class="checkbox-material">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain
-                                        swept through metro Detroit
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs" data-original-title="Edit Task">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Remove">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="optionsCheckboxes">
-                                                <span class="checkbox-material">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs" data-original-title="Edit Task">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Remove">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -158,7 +127,9 @@
                     <h4 class="card-title">{{.Acc.FullName}} {{if .Acc.Private}}| 🕵️{{end}}</h4>
                 </a>
                 <p class="card-content">
-                    {{.Acc.Bio}}
+                    <b>{{.Acc.Followers}} | {{.Acc.Following}}</b>
+                    <br>
+                    <br> {{.Acc.Bio}}
                     <br>
                     <br>
                     <i>Last Update: {{.Acc.LastUpdate.Format "Mon Jan 2, 3:04 PM"}}</i>

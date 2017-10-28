@@ -50,7 +50,7 @@ func init() {
 			Name:     "Account Settings",
 			Link:     "/accounts/{username}",
 			Icon:     "settings",
-			Template: newTemplate("base.html", "account.html"),
+			Template: newTemplate("base.html", "account.html", "jobs/follow.html", "jobs/unfollow.html", "jobs/sources.html"),
 			Unlisted: true,
 			Handler:  AccSettingsHandler,
 		},

@@ -20,6 +20,10 @@ type InstahelperConfig struct {
 
 	// Analytics enabled?
 	Analytics bool
+
+	// Automatic Updates?
+	// TODO
+	AutomaticUpdates bool
 }
 
 // Account is an Instagram Account
@@ -30,8 +34,10 @@ type Account struct {
 	Password string `json:"-"`
 
 	// Vanity Info
-	FullName string `json:"full_name"`
-	Bio      string `json:"bio"`
+	FullName  string `json:"full_name"`
+	Bio       string `json:"bio"`
+	Following int    `json:"following"`
+	Followers int    `json:"followers"`
 	// profile pic url
 	ProfilePic string `json:"profile_pic"`
 
@@ -42,7 +48,7 @@ type Account struct {
 	CachedInsta []byte `json:"-"`
 
 	// Settings is not inline to be able to copy over settings between accounts
-	Settings *Settings `json:"settings"`
+	Settings `storm:"inline"`
 
 	// LastAccess is the last time the account was accessed using insta.Acc
 	LastAccess time.Time `json:"last_access"`

@@ -217,3 +217,28 @@ $(".delete-account").on("click", function() {
     });
   });
 });
+
+$("#jobs-submit").on("click", function() {
+  var btn = $(this);
+
+  // All forms with the class jobs-settings
+  var data = $(".jobs-settings").serialize();
+
+  btn.prop("disabled", true);
+  $(".spinner").show();
+  $.ajax({
+    url: btn.attr("url"),
+    type: "POST",
+    success: function(d) {
+      showNotification("Updated!", "top", "left", "success");
+      btn.prop("disabled", false);
+      $(".spinner").hide();
+    },
+
+    error: function(d) {
+      showNotification("Error: " + d.responseText, "top", "left", "danger");
+      btn.prop("disabled", false);
+      $(".spinner").hide();
+    }
+  });
+});

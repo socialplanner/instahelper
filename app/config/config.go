@@ -68,9 +68,11 @@ func createConfig() error {
 	if DB.All(c); len(*c) > 0 {
 		return nil
 	}
+	// Defaults
 	return DB.Save(&InstahelperConfig{
-		ID:        1,
-		AESKey:    key,
-		Analytics: true,
+		ID:               1,
+		AESKey:           key,
+		Analytics:        true,
+		AutomaticUpdates: true,
 	})
 }

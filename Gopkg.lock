@@ -4,8 +4,8 @@
 [[projects]]
   branch = "master"
   name = "github.com/ahmdrz/goinsta"
-  packages = [".","response"]
-  revision = "d5a427c2e1c062782008f0883042f0547a5b6e41"
+  packages = [".","response","store","uuid"]
+  revision = "224f4d67c73607bf18899a349e73ba08c6070f6c"
 
 [[projects]]
   name = "github.com/asdine/storm"
@@ -63,6 +63,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8e880906175c0186e3280bbbe44264dc768d6c16dd65eac417514d7dd25fc02d"
+  inputs-digest = "afd153dd6ed079e2572640f84ff5706dbd66fb963b8e78452db8450d0be9384f"
   solver-name = "gps-cdcl"
   solver-version = 1

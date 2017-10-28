@@ -1,0 +1,49 @@
+{{define "follow"}}
+<form class="jobs-settings" action="/api/accounts/settings/jaynagpaul/follow" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group label-floating">
+                <label class="control-label">Follows Per Day</label>
+                <input min="0" max="7500" name="followLimit" value="{{.Acc.FollowsPerDay}}" type="number" class="form-control">
+                <span class="material-input"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group label-floating ">
+                <label class="control-label">Full Name</label>
+                <input name="fullName" value="Jay Nagpaul" type="text" class="form-control">
+                <span class="material-input"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group label-floating is-empty">
+                <label class="control-label">Password (This does not change your Instagram password, only what Instahelper thinks it is)</label>
+                <input name="password" type="password" class="form-control">
+                <span class="material-input"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group label-floating is-empty">
+                <label class="control-label">Proxy</label>
+                <input name="proxy" value="" type="text" class="form-control">
+                <span class="material-input"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="terms">
+                    <span class="checkbox-material">
+                    </span> Follow Private Accounts
+                </label>
+            </div>
+        </div>
+    </div>
+</form>
+{{end}}

@@ -17,3 +17,16 @@ func analyticsEnabled() bool {
 
 	return c.Analytics
 }
+
+// If the user has google analytics enabled
+func updatesEnabled() bool {
+	c, err := config.Config()
+
+	if err != nil {
+		// Default
+		logrus.Error(err)
+		return true
+	}
+
+	return c.AutomaticUpdates
+}

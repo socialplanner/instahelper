@@ -75,7 +75,7 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 		LastUpdate: time.Now(),
 		LastAccess: time.Now(),
 
-		Settings: &config.Settings{
+		Settings: config.Settings{
 			Proxy: proxy,
 		},
 		CachedInsta: b,
@@ -174,6 +174,21 @@ func APIUpdateAccountHandler(w http.ResponseWriter, r *http.Request) {
 	acc.Private = user.IsPrivate
 	acc.FullName = user.FullName
 	acc.LastUpdate = time.Now()
+
+	following, err := ig.SelfTotalUserFollowing()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	followers, err := ig.SelfTotalUserFollowers()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	acc.Following = len(following.Users)
+	acc.Followers = len(followers.Users)
 
 	if err := acc.Update(); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

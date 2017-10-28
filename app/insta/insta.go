@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/ahmdrz/goinsta"
-	"github.com/ahmdrz/goinsta/response"
 	"github.com/ahmdrz/goinsta/store"
 	"github.com/socialplanner/instahelper/app/config"
 )
@@ -63,12 +62,11 @@ func Acc(name string) (*goinsta.Instagram, error) {
 		}
 	}
 
-	var p response.ProfileDataResponse
-	// Only call at the most every 5 minutes.
-	if time.Now().Sub(acc.LastAccess).Minutes() > 5 {
+	// Only call at the most every 25 minutes.
+	if time.Now().Sub(acc.LastAccess).Minutes() > 25 {
 		// We are using a request that should pass under most circumstances, to check
 		// if the account is still logged in. The password could've changed between now and then, or any number of things.
-		p, err = ig.GetProfileData()
+		p, err := ig.GetProfileData()
 
 		if err != nil {
 			if err := ig.Login(); err != nil {
@@ -76,14 +74,29 @@ func Acc(name string) (*goinsta.Instagram, error) {
 			}
 		}
 
+		user := p.User
+
+		// Update vanity profile data
+		acc.Bio = user.Biography
+		acc.Private = user.IsPrivate
+		acc.ProfilePic = user.HDProfilePicURLInfo.URL
+
+		following, err := ig.SelfTotalUserFollowing()
+		if err != nil {
+			return nil, err
+		}
+
+		followers, err := ig.SelfTotalUserFollowers()
+		if err != nil {
+			return nil, err
+		}
+
+		acc.Following = len(following.Users)
+		acc.Followers = len(followers.Users)
+		acc.LastUpdate = time.Now()
 	}
 
-	user := p.User
-
-	// Update vanity profile data
-	acc.Bio = user.Biography
-	acc.Private = user.IsPrivate
-	acc.ProfilePic = user.HDProfilePicURLInfo.URL
+	acc.LastAccess = time.Now()
 
 	err = acc.Update()
 

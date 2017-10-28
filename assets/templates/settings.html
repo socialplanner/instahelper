@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group label-floating {{if eq (len .C.Username) 0}}is-empty{{end}}">
-                                <label class="control-label">Username</label>
+                                <label class="control-label">Username{{ if eq (len .C.Username) 0 }} (No Username Set) {{end}}</label>
                                 <input value="{{.C.Username}}" name="username" type="text" class="form-control">
                                 <span class="material-input"></span>
                             </div>
@@ -32,6 +32,15 @@
                             <div class="togglebutton">
                                 <label>
                                     <input name="analytics" type="checkbox" {{if analyticsEnabled}} checked="" {{end}}>Anonymous analytics used to improve Instahelper
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="togglebutton">
+                                <label>
+                                    <input name="automaticUpdates" type="checkbox" {{if updatesEnabled}} checked="" {{end}}>Automatic Updates
                                 </label>
                             </div>
                         </div>

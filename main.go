@@ -106,7 +106,7 @@ func main() {
 			r.Post("/create", handlers.APICreateAccountHandler)
 			r.Delete("/{username}", handlers.APIDeleteAccountHandler)
 			r.Post("/update/{username}", handlers.APIUpdateAccountHandler)
-			r.Post("/settings/{username}", handlers.APIAccSettingsHandler)
+			r.Post("/profile/{username}", handlers.APIAccProfileHandler)
 		})
 
 		r.Route("/notifications", func(r chi.Router) {

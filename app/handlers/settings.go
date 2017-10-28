@@ -3,41 +3,10 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/asdine/storm"
-
 	"github.com/sirupsen/logrus"
 
-	"github.com/go-chi/chi"
 	"github.com/socialplanner/instahelper/app/config"
 )
-
-// AccSettingsHandler is the handler for the page to change account settings
-// WIP
-func AccSettingsHandler(w http.ResponseWriter, r *http.Request) {
-	p := Template("account")
-
-	username := chi.URLParam(r, "username")
-
-	var acc config.Account
-
-	if err := config.DB.One("Username", username, &acc); err != nil {
-		if err == storm.ErrNotFound {
-			http.NotFound(w, r)
-			return
-		}
-
-		Error(w, err)
-		return
-	}
-
-	err := p.Execute(w, map[string]interface{}{
-		"Acc": acc,
-	})
-
-	if err != nil {
-		Error(w, err)
-	}
-}
 
 // SettingsHandler is the handler for instahelper settings
 func SettingsHandler(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +33,7 @@ func APISettingsEditHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
 	analytics := r.PostFormValue("analytics") == "on"
+	updates := r.PostFormValue("automaticUpdates") == "on"
 
 	c, err := config.Config()
 
@@ -82,6 +52,7 @@ func APISettingsEditHandler(w http.ResponseWriter, r *http.Request) {
 		c.Password = ""
 	}
 	c.Analytics = analytics
+	c.AutomaticUpdates = updates
 
 	if err := c.Update(); err != nil {
 		logrus.Error(err)
