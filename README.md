@@ -19,7 +19,7 @@ This project is in it's early stages and shouldn't be considered ready for use u
 ## Installation
 1. Travel to [Github Releases](https://github.com/socialplanner/instahelper/releases) and download the latest release for your operating system.
 2. Navigate to the downloaded zip and unzip it
-3. Double click the respective run file. run.sh/run.command/run.bat
+3. Double click the instahelper file.
 
 ## Project Goals
 * Simple

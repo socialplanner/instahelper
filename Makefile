@@ -4,9 +4,6 @@ GOARCHES = 386 amd64
 BITS = 32 64
 GOOSES = linux darwin windows
 
-RUNCMD = ./instahelper
-RUNCMDWIN = ./instahelper.exe 
-
 default: debug
 
 build: version deps assets-release
@@ -19,13 +16,6 @@ build: version deps assets-release
 	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), mkdir -p dist/instahelper-$(v)-$(os)-$(arch);))
 
 	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), mv instahelper-$(v)-$(os)-$(arch) dist/instahelper-$(v)-$(os)-$(arch)/instahelper;))
-
-# Checks OS and adds the respective run command
-	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), \
-	$(if $(filter windows,$(os)), echo $(RUNCMDWIN) > dist/instahelper-$(v)-$(os)-$(arch)/run.bat;) \
-	$(if $(filter darwin,$(os)), echo $(RUNCMD) > dist/instahelper-$(v)-$(os)-$(arch)/run.command;) \
-	$(if $(filter linux,$(os)), echo $(RUNCMD) > dist/instahelper-$(v)-$(os)-$(arch)/run.sh;) \
-	))
 	
 # Renames 386 > 32, amd64 > 64
 	@$(foreach arch,$(GOARCHES),$(foreach os,  $(GOOSES), \

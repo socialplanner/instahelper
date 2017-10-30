@@ -1,1 +1,24 @@
-{{define "unfollow"}} UNFOLLOW {{end}}
+{{define "unfollow"}}
+<form class="jobs-settings">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group label-floating">
+                <label class="control-label">Unfollows Per Day</label>
+                <input min="0" max="7500" name="followLimit" value="{{.Acc.FollowsPerDay}}" type="number" class="form-control">
+                <span class="material-input"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="terms">
+                    <span class="checkbox-material">
+                    </span> Follow Private Accounts
+                </label>
+            </div>
+        </div>
+    </div>
+</form>
+{{end}}

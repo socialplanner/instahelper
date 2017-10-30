@@ -1,10 +1,18 @@
 {{define "follow"}}
 <form class="jobs-settings">
     <div class="row">
+        <legend class="form-group" style="padding-bottom: 0px;">Follows Per Day</legend>
         <div class="col-md-6">
             <div class="form-group label-floating">
-                <label class="control-label">Follows Per Day</label>
-                <input min="0" max="7500" name="followLimit" value="{{.Acc.FollowsPerDay}}" type="number" class="form-control">
+                <label class="control-label">From</label>
+                <input min="0" max="7500" name="followFrom" value="{{.Acc.FollowsPerDay}}" type="number" class="form-control">
+                <span class="material-input"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group label-floating">
+                <label class="control-label">To</label>
+                <input min="0" max="7500" name="followTo" value="{{.Acc.FollowsPerDay}}" type="number" class="form-control">
                 <span class="material-input"></span>
             </div>
         </div>

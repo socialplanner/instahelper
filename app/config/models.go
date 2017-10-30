@@ -44,6 +44,9 @@ type Account struct {
 	Private bool `json:"private"`
 	// ---
 
+	// Proxy to make requests with
+	Proxy string `json:"proxy,omitempty"`
+
 	// Cached GoInsta object
 	CachedInsta []byte `json:"-"`
 
@@ -63,20 +66,20 @@ type Account struct {
 // Settings for a given account
 type Settings struct {
 	// FOLLOW SETTINGS
-	FollowsPerDay int `json:"follows_per_day,omitempty"`
+	FollowsPerDay Range `json:"follows_per_day,omitempty"`
 	// FollowPrivate will decide if we follow private accounts
 	FollowPrivate bool `json:"follow_private,omitempty"`
 
 	// COMMENT SETTINGS
-	CommentsPerDay int `json:"comments_per_day,omitempty"`
+	CommentsPerDay Range `json:"comments_per_day,omitempty"`
 	// CommentList is the list of comments to choose from when commenting
 	CommentList []string `json:"comment_list,omitempty"`
 
 	// LIKE SETTINGS
-	LikesPerDay int `json:"likes_per_day,omitempty"`
+	LikesPerDay Range `json:"likes_per_day,omitempty"`
 
 	// UNFOLLOW SETTINGS
-	UnfollowsPerDay int `json:"unfollows_per_day,omitempty"`
+	UnfollowsPerDay Range `json:"unfollows_per_day,omitempty"`
 	// UnfollowAt is the number of follows when the bot should start unfollowing
 	UnfollowAt int `json:"unfollow_at,omitempty"`
 	// UnfollowNonFollowers will decide if we unfollow those who do not follow after one day
@@ -89,10 +92,6 @@ type Settings struct {
 	Blacklist []string `json:"blacklist,omitempty"`
 	// Whitelist is the list of users to only follow, comment, and like on
 	Whitelist []string `json:"whitelist,omitempty"`
-
-	// MISC
-	// Proxy to make requests with
-	Proxy string `json:"proxy,omitempty"`
 }
 
 // A Notification that would be shown in the top navbar.
@@ -100,6 +99,12 @@ type Notification struct {
 	ID   int    `storm:"id,increment" json:"id"`
 	Link string `json:"link"`
 	Text string `json:"text,omitempty"`
+}
+
+// Range is a simple struct to represent a range of two numbers
+type Range struct {
+	From int `json:"from,omitempty"`
+	To   int `json:"to,omitempty"`
 }
 
 // USE SAVE OVER UPDATE

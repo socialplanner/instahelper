@@ -71,13 +71,12 @@ func APICreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 		Private:    user.IsPrivate,
 		ProfilePic: user.HDProfilePicURLInfo.URL,
 
+		Proxy: proxy,
+
 		AddedAt:    time.Now(),
 		LastUpdate: time.Now(),
 		LastAccess: time.Now(),
 
-		Settings: config.Settings{
-			Proxy: proxy,
-		},
 		CachedInsta: b,
 	})
 
