@@ -62,31 +62,37 @@ type Account struct {
 
 // Settings for a given account
 type Settings struct {
-	FollowsPerDay   int `json:"follows_per_day,omitempty"`
-	CommentsPerDay  int `json:"comments_per_day,omitempty"`
-	LikesPerDay     int `json:"likes_per_day,omitempty"`
+	// FOLLOW SETTINGS
+	FollowsPerDay int `json:"follows_per_day,omitempty"`
+	// FollowPrivate will decide if we follow private accounts
+	FollowPrivate bool `json:"follow_private,omitempty"`
+
+	// COMMENT SETTINGS
+	CommentsPerDay int `json:"comments_per_day,omitempty"`
+	// CommentList is the list of comments to choose from when commenting
+	CommentList []string `json:"comment_list,omitempty"`
+
+	// LIKE SETTINGS
+	LikesPerDay int `json:"likes_per_day,omitempty"`
+
+	// UNFOLLOW SETTINGS
 	UnfollowsPerDay int `json:"unfollows_per_day,omitempty"`
-
-	// Proxy to make requests with
-	Proxy string `json:"proxy,omitempty"`
-
 	// UnfollowAt is the number of follows when the bot should start unfollowing
 	UnfollowAt int `json:"unfollow_at,omitempty"`
 	// UnfollowNonFollowers will decide if we unfollow those who do not follow after one day
 	UnfollowNonFollowers bool `json:"unfollow_non_followers,omitempty"`
 
+	// SOURCES
 	// Tags to follow, comment, or like
 	Tags []string `json:"tags,omitempty"`
-	// CommentList is the list of comments to choose from when commenting
-	CommentList []string `json:"comment_list,omitempty"`
-
 	// Blacklist is a list of accounts to avoid following, commenting, or liking
 	Blacklist []string `json:"blacklist,omitempty"`
 	// Whitelist is the list of users to only follow, comment, and like on
 	Whitelist []string `json:"whitelist,omitempty"`
 
-	// FollowPrivate will decide if we follow private accounts
-	FollowPrivate bool `json:"follow_private,omitempty"`
+	// MISC
+	// Proxy to make requests with
+	Proxy string `json:"proxy,omitempty"`
 }
 
 // A Notification that would be shown in the top navbar.

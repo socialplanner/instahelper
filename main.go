@@ -27,6 +27,7 @@ func main() {
 	username := flag.String("user", "", "Username for instahelper")
 	password := flag.String("pass", "", "Password for instahelper")
 	useAuth := flag.Bool("auth", false, "Run using http basic auth")
+	noOpen := flag.Bool("noopen", false, "Do not automatically open the page.")
 
 	flag.Parse()
 
@@ -82,6 +83,7 @@ func main() {
 	// Pages
 
 	if *debug {
+		logrus.SetLevel(logrus.DebugLevel)
 		for _, p := range handlers.Pages {
 			r.With(middleware.Logger).Get(p.Link, p.Handler)
 		}
@@ -136,10 +138,12 @@ func main() {
 		}
 
 		logrus.Infof("Up and running at http://%s:%d !", ip, *port)
-		err = open.Run(fmt.Sprintf("http://%s:%d", ip, *port))
+		if !*noOpen {
+			err = open.Run(fmt.Sprintf("http://%s:%d", ip, *port))
 
-		if err != nil {
-			logrus.Error(err)
+			if err != nil {
+				logrus.Error(err)
+			}
 		}
 
 	}()

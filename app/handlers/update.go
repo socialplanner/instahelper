@@ -2,32 +2,18 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/sirupsen/logrus"
-	"github.com/socialplanner/instahelper/app/config"
 	"github.com/socialplanner/instahelper/app/update"
 )
 
 // UpdateHandler is the handler for /update
 func UpdateHandler(w http.ResponseWriter, r *http.Request) {
-
-	var releases []update.Release
-	var err error
-
-	if r := config.Get("releases"); r == nil {
-		releases, err = update.ListReleases()
-		config.Set("releases", releases, 30*time.Minute)
-	} else {
-		if rel, ok := r.([]update.Release); ok {
-			releases = rel
-		} else {
-			releases, err = update.ListReleases()
-			config.Set("releases", releases, 30*time.Minute)
-		}
-	}
+	releases, err := update.ListReleases()
 
 	if err != nil {
 		logrus.Error(err)
@@ -41,12 +27,40 @@ func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 		t, err := time.Parse(time.RFC3339, r.PublishedAt)
 
 		if err == nil {
-			releases[index].PublishedAt = t.Format("Mon Jan 2, 3:04 PM ")
+			releases[index].PublishedAt = t.Format("Jan 2")
 		}
 	}
 
 	err = Template("update").Execute(w, map[string]interface{}{
-		"Releases": releases,
+		"Releases":         releases,
+		"Version":          update.VERSION,
+		"DifferentVersion": update.DIFFERENTVERSION,
+		"updateAvailable": func() bool {
+			if asset, err := update.HigherVersion(update.VERSION); err == nil && asset != nil {
+				return true
+			}
+
+			return false
+		},
+
+		"truncate": func(str string) string {
+			truncateAt := 140
+			var truncated string
+
+			if len(str) > truncateAt {
+				truncated = str[0:truncateAt]
+			} else {
+				return str
+			}
+
+			if truncated[len(truncated)-1:] != "." {
+				truncated += "..."
+			} else {
+				truncated += ".."
+			}
+
+			return truncated
+		},
 	})
 
 	if err != nil {
@@ -58,18 +72,16 @@ func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 // APIUpdateHandler is the handler used to update instahelper to the latest version
 func APIUpdateHandler(w http.ResponseWriter, r *http.Request) {
-	asset, err := update.ToLatest(update.VERSION)
+	_, err := update.ToLatest(update.VERSION)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	b, _ := json.Marshal(asset)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(b)
+	fmt.Fprint(w, "Awesome! Updated to the latest version! All you need to do is restart the current running app.")
 }
 
 // APIUpdateToHandler is the handler used to update instahelper to a specific version

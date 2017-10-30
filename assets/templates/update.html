@@ -3,15 +3,30 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header" data-background-color="purple">
-                <h4 class="title">Update</h4>
+                <h1></h1>
+                <h4 class="title">{{if not .DifferentVersion}}Update {{if call .updateAvailable}}
+                    <form class="pull-right" action="/api/update" method="POST">
+                        <button type="submit" class="btn btn-success pull-right" rel="tooltip">Update
+                            <i class="material-icons">get_app</i>
+                            <div class="ripple-container"></div>
+                        </button>
+                    </form>
+                    {{end}} {{else}}
+                    <b>Restart your app to experience the latest changes!</b>{{end}}
+                </h4>
                 <p class="category">You can update to a specific version by clicking the respective button.</p>
+                {{if not .DifferentVersion}}
+                <p class="category">You are currently on version
+                    <b>{{.Version}}</b>
+                </p>
+                {{end}}
             </div>
             <div class="card-content table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <th>Version</th>
                         <th>Name</th>
-                        <th>Published At</th>
+                        <th>Release Date</th>
                         <th>Description</th>
                         <th>Actions</th>
                     </thead>
@@ -24,7 +39,7 @@
                             <td>
                                 {{if .PreRelease}}
                                 <b>PRERELEASE:</b>
-                                <br> {{end}} {{.Description}}
+                                <br> {{end}} {{call $.truncate .Description}}
                             </td>
                             <td class="td-actions text-right">
                                 <a href="{{.InfoURL}}">

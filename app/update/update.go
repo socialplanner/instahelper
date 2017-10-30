@@ -14,9 +14,49 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Masterminds/semver"
+	"github.com/socialplanner/instahelper/app/notifications"
+
 	"github.com/sirupsen/logrus"
+
+	"github.com/Masterminds/semver"
+	"github.com/socialplanner/instahelper/app/config"
 )
+
+// DIFFERENTVERSION tells instahelper if the current version differs from the downloaded version
+var DIFFERENTVERSION = false
+
+func init() {
+	go func() {
+		for {
+			time.Sleep(time.Second * 10)
+
+			// Check config every 30 minutes instead of once, so the settings are allowed to change without a restart.
+			c, err := config.Config()
+			if err != nil {
+				logrus.Error(err)
+				continue
+			}
+
+			// Automatic Update Enabled
+			if c.AutomaticUpdates {
+				if asset, err := ToLatest(VERSION); asset != nil && err == nil {
+					logrus.Info("Updated to the latest version!")
+					if err := notifications.NewNotification("Updated to the latest version! Make sure to restart the app to experience the latest changes!", "/update"); err != nil {
+						logrus.Error(err)
+					}
+					// Stop checking for updates.
+					break
+				} else {
+					if err.Error() != "No available download" {
+						logrus.Error(err)
+						continue
+					}
+					logrus.Debug("No available update")
+				}
+			}
+		}
+	}()
+}
 
 const (
 	baseURL = "https://api.github.com/repos/socialplanner/instahelper/"
@@ -26,53 +66,17 @@ const (
 // If version is an empty string, it will fetch and replace the binary no matter what.
 // Else it will only replace it if the version is greater than the current version
 func ToLatest(version string) (*Asset, error) {
-	var currentVer *semver.Version
-
 	// HACKY
 	if version == "" {
 		version = "0.0.1"
 	}
 
-	releases, err := ListReleases()
+	asset, err := HigherVersion(version)
 
 	if err != nil {
-		logrus.Error(err)
 		return nil, err
 	}
-
-	currentVer, err = semver.NewVersion(version)
-
-	if err != nil {
-		logrus.Error(err)
-		return nil, err
-	}
-
-	for _, r := range releases {
-		// Skip release if it is a prerelease
-		if r.PreRelease {
-			continue
-		}
-
-		ver, err := semver.NewVersion(strings.Replace(
-			r.Version,
-			"v",
-			"",
-			-1,
-		))
-
-		if err != nil {
-			continue
-		}
-
-		if !ver.LessThan(currentVer) {
-			if asset := pickAsset(r.Assets); asset != nil {
-				err := download(asset.DownloadURL)
-				return asset, err
-			}
-
-		}
-	}
-	return nil, errors.New("No available download")
+	return asset, download(asset.DownloadURL)
 }
 
 // To will replace the current binary with the binary with version ver.
@@ -98,6 +102,12 @@ func To(ver string) (*Asset, error) {
 
 // ListReleases collects information about github releases
 func ListReleases() ([]Release, error) {
+	if r := config.Get("releases"); r != nil {
+		if rel, ok := r.([]Release); ok {
+			return rel, nil
+		}
+	}
+
 	resp, err := http.Get(baseURL + "releases")
 
 	if err != nil {
@@ -121,7 +131,50 @@ func ListReleases() ([]Release, error) {
 		return nil, err
 	}
 
-	return releases, err
+	config.Set("releases", releases, 30*time.Minute)
+
+	return releases, nil
+}
+
+// HigherVersion returns the asset if there is a higher version available to download.
+func HigherVersion(version string) (*Asset, error) {
+	releases, err := ListReleases()
+
+	if err != nil {
+		return nil, err
+	}
+
+	currentVer, err := semver.NewVersion(version)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, r := range releases {
+		// Skip release if it is a prerelease
+		if r.PreRelease {
+			//continue
+		}
+
+		ver, err := semver.NewVersion(strings.Replace(
+			r.Version,
+			"v",
+			"",
+			-1,
+		))
+
+		if err != nil {
+			continue
+		}
+
+		if !ver.LessThan(currentVer) {
+			if asset := pickAsset(r.Assets); asset != nil {
+				return asset, nil
+			}
+		}
+	}
+
+	return nil, errors.New("No available download")
 }
 
 // streams the url and copys it to os.Executable()
@@ -202,7 +255,12 @@ func download(url string) error {
 	// Copies it over
 	_, err = io.Copy(exe, f)
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	DIFFERENTVERSION = true
+	return nil
 }
 
 func pickAsset(assets []Asset) *Asset {

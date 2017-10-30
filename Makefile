@@ -49,7 +49,7 @@ build: version deps assets-release
 	@$(foreach bit,$(BITS),$(foreach os,  $(GOOSES), rm -rf dist/instahelper-$(v)-$(os)-$(bit);))
 
 debug: assets
-	go run main.go -debug
+	go run main.go -debug -noopen
 
 test: deps assets 
 	go test -v ./app/...
