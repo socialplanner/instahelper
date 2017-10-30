@@ -28,7 +28,7 @@ var DIFFERENTVERSION = false
 func init() {
 	go func() {
 		for {
-			time.Sleep(time.Second * 10)
+			time.Sleep(time.Minute * 30)
 
 			// Check config every 30 minutes instead of once, so the settings are allowed to change without a restart.
 			c, err := config.Config()
